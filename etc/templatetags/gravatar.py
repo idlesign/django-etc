@@ -1,5 +1,9 @@
 import hashlib
-from urllib import parse
+
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 
 from django import template
 from django.contrib.auth import get_user_model
@@ -10,13 +14,22 @@ register = template.Library()
 
 
 def get_gravatar_url(obj, size=65, default='identicon'):
+    """
+
+    See http://ru.gravatar.com/site/implement/images/ for details on options.
+
+    :param UserModel, str obj:
+    :param int size:
+    :param str default: 404, mm (mystery-man), identicon, monsterid, wavatar, retro, blank
+    :return:
+    """
     if isinstance(obj, USER_MODEL):
         email = obj.email or obj.username
     else:
         email = obj
 
     if email:
-        return 'http://www.gravatar.com/avatar/%s/?%s' % (hashlib.md5(email.encode()).hexdigest(), parse.urlencode({'size': size, 'd': default}))
+        return 'http://www.gravatar.com/avatar/%s/?%s' % (hashlib.md5(email.encode()).hexdigest(), urlencode({'size': size, 'd': default}))
     return ''
 
 
