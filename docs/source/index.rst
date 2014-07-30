@@ -12,7 +12,7 @@ Description
 
 .. note::
 
-    Add the **sitetree** application to INSTALLED_APPS in your settings file (usually 'settings.py').
+    Add the **etc** application to INSTALLED_APPS in your settings file (usually 'settings.py').
 
 
 
