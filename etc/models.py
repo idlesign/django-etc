@@ -22,7 +22,7 @@ class InheritedModel(six.with_metaclass(InheritedModelMetaclass)):
                 abstract = True
 
 
-        class MyChildModel1(MyParentModel, InheritedModel):
+        class MyChildModel1(InheritedModel, MyParentModel):  # NOTE: InheritedModel must go first.
 
             time_created = models.DateTimeField('Date created', auto_now_add=True)
 
@@ -31,7 +31,7 @@ class InheritedModel(six.with_metaclass(InheritedModelMetaclass)):
                 expired = {'help_text': 'This code is expired.'}
 
 
-        class MyChildModel2(MyParentModel, InheritedModel):
+        class MyChildModel2(InheritedModel, MyParentModel):
 
             code = models.CharField('dummy', max_length=128, unique=True, editable=False)
 

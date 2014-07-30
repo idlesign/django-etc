@@ -25,7 +25,7 @@ to be able to customize field attributes (e.g. texts) of a base-parent model.
             abstract = True
 
 
-    class SecretModel(InheritedModel, MyParentModel):
+    class SecretModel(InheritedModel, MyParentModel):  # NOTE: InheritedModel must go first.
 
         time_created = models.DateTimeField('Date created', auto_now_add=True)
 
