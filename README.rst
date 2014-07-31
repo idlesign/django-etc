@@ -2,6 +2,8 @@ django-etc
 ==========
 https://github.com/idlesign/django-etc
 
+.. image:: https://badge.fury.io/py/django-etc.png
+    :target: http://badge.fury.io/py/django-etc
 
 .. image:: https://pypip.in/d/django-etc/badge.png
         :target: https://crate.io/packages/django-etc
