@@ -20,6 +20,8 @@ Models:
 
 * **etc.models.InheritedModel** allows to override fields attributes in inherited models.
 
+* **etc.toolbox.get_model_class_from_settings** allows getting model class from its string representation in settings module.
+
 
 Template tags:
 

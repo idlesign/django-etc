@@ -2,8 +2,8 @@ Models Related Bits
 ===================
 
 
-InheritedModel Model
---------------------
+InheritedModel
+--------------
 
 **etc.models.InheritedModel** allows to override fields attributes in inherited models.
 
@@ -66,3 +66,30 @@ to be able to customize field attributes (e.g. texts) of a base-parent model.
         {% load model_meta %}
         {% model_meta_verbose_name_plural my_model %}
 
+
+get_model_class_from_settings
+-----------------------------
+
+**etc.toolbox.get_model_class_from_settings** allows getting model class from its string representation in settings module.
+
+This might be handy if you allow users of your app to extend/override your built-in models:
+
+.. code-block:: python
+
+        myapp/settings.py
+
+            from django.conf import settings
+
+            # This allows users to set MYAPP_MY_MODEL in settings.py of their projects.
+            MY_MODEL = getattr(settings, 'MYAPP_MY_MODEL', 'myapp.MyModel')
+
+
+        myapp/utils.py
+
+            from myapp import settings
+
+            def get_my_model():
+                return get_model_class_from_settings(settings, 'MY_MODEL')
+
+
+After that ``get_my_model`` will always return an appropriate model class object even if it is customized by a user.
