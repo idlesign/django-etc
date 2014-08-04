@@ -1,7 +1,11 @@
 django-etc changelog
 ====================
 
+v0.2.0
+------
++ Implemented get_model_class_from_settings().
+
+
 v0.1.0
 ------
 + Basic functionality.
-
