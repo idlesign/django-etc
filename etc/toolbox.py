@@ -1,5 +1,11 @@
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models import get_model
+
+try:
+    from django.apps import apps
+    apps_get_model = apps.get_model
+except ImportError:  # Django < 1.7
+    from django.db.models import get_model
+    apps_get_model = None
 
 
 def get_model_class_from_settings(settings_module, settings_entry_name):
@@ -26,7 +32,13 @@ def get_model_class_from_settings(settings_module, settings_entry_name):
     except ValueError:
         raise ImproperlyConfigured('`%s` must have the following format: `app_name.model_name`.' % settings_entry_name)
 
-    model = get_model(app_name, model_name)
+    if apps_get_model is None:
+        model = get_model(app_name, model_name)
+    else:
+        try:
+            model = apps_get_model(app_name, model_name)
+        except (LookupError, ValueError):
+            model = None
 
     if model is None:
         raise ImproperlyConfigured('`%s` refers to a model `%s` that has not been installed.' % (settings_entry_name, model_name))
