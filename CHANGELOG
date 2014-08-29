@@ -1,6 +1,12 @@
 django-etc changelog
 ====================
 
+v0.3.0
+------
++ Implemented set_form_widgets_attrs().
+* Suppressed Django 1.7 warning.
+
+
 v0.2.0
 ------
 + Implemented get_model_class_from_settings().
