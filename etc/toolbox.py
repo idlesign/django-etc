@@ -8,6 +8,22 @@ except ImportError:  # Django < 1.7
     apps_get_model = None
 
 
+def set_form_widgets_attrs(form, attrs):
+    """Applies a given HTML attributes to each field widget of a given form.
+
+    Example:
+
+        set_form_widgets_attrs(my_form, {'class': 'clickable'})
+
+    """
+    for _, field in form.fields.items():
+        attrs_ = dict(attrs)
+        for name, val in attrs.items():
+            if hasattr(val, '__call__'):
+                attrs_[name] = val(field)
+        field.widget.attrs = field.widget.build_attrs(attrs_)
+
+
 def get_model_class_from_settings(settings_module, settings_entry_name):
     """Returns a certain model as defined in a given settings module.
 
@@ -44,4 +60,3 @@ def get_model_class_from_settings(settings_module, settings_entry_name):
         raise ImproperlyConfigured('`%s` refers to a model `%s` that has not been installed.' % (settings_entry_name, model_name))
 
     return model
-
