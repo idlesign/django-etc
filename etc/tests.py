@@ -1,3 +1,4 @@
+from django import forms
 from django.utils import unittest
 from django.db import models
 from django.contrib.auth.models import User
@@ -5,6 +6,13 @@ from django.contrib.auth.models import User
 from .models import InheritedModel
 from .templatetags.model_meta import model_meta_verbose_name, model_meta_verbose_name_plural
 from .templatetags.gravatar import gravatar_get_url, gravatar_get_img
+from .toolbox import set_form_widgets_attrs
+
+
+class MyForm(forms.Form):
+
+    field1 = forms.CharField(label='f1', max_length=100)
+    field2 = forms.CharField(label='f2', max_length=100)
 
 
 class MyParentModel(models.Model):
@@ -59,6 +67,16 @@ class ModelMetaTemplateTagsTest(unittest.TestCase):
     def test_verbose_name_plural(self):
         m = MyChildModel1
         self.assertEqual(model_meta_verbose_name_plural(m), 'VerbPlural')
+
+
+class FormTest(unittest.TestCase):
+
+    def test_set_form_widgets_attrs(self):
+        f = MyForm()
+        set_form_widgets_attrs(f, {'class': 'clickable'})
+        output = f.as_p()
+        self.assertIn('id_field1">f1:</label> <input class="clickable', output)
+        self.assertIn('id_field2">f2:</label> <input class="clickable', output)
 
 
 class GravatarTemplateTagsTest(unittest.TestCase):
