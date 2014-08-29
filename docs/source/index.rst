@@ -31,6 +31,7 @@ Table of Contents
     :maxdepth: 2
 
     models
+    forms
     thirdparty
 
 
@@ -43,4 +44,3 @@ Get involved into django-etc
 **Write code.** If you are eager to participate in application development, fork it at https://github.com/idlesign/django-etc, write your code, whether it should be a bugfix or a feature implementation, and make a pull request right from the forked project page.
 
 **Spread the word.** If you have some tips and tricks or any other words in mind that you think might be of interest for the others — publish it.
-

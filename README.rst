@@ -15,12 +15,16 @@ Description
 *Tiny stuff for Django that won't fit into separate apps.*
 
 
-
 Models:
 
 * **etc.models.InheritedModel** allows to override fields attributes in inherited models.
 
 * **etc.toolbox.get_model_class_from_settings** allows getting model class from its string representation in settings module.
+
+
+Forms:
+
+* **etc.toolbox.set_form_widgets_attrs** allows bulk apply HTML attributes to every field widget of a given form.
 
 
 Template tags:
@@ -43,4 +47,3 @@ Documentation
 -------------
 
 http://django-etc.readthedocs.org/
-
