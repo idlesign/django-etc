@@ -1,6 +1,11 @@
 django-etc changelog
 ====================
 
+v0.4.0
+------
++ Implemented get_model_class_from_string().
+
+
 v0.3.0
 ------
 + Implemented set_form_widgets_attrs().
