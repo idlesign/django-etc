@@ -67,6 +67,19 @@ to be able to customize field attributes (e.g. texts) of a base-parent model.
         {% model_meta_verbose_name_plural my_model %}
 
 
+get_model_class_from_string
+---------------------------
+
+* **etc.toolbox.get_model_class_from_string** allows getting model class from its string representation.
+
+Returns a certain model as defined in a string formatted ``<app_name>.<model_name>``.
+
+.. code-block:: python
+
+        model = get_model_class_from_string('myapp.MyModel')
+
+
+
 get_model_class_from_settings
 -----------------------------
 

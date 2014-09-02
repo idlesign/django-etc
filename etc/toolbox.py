@@ -24,6 +24,33 @@ def set_form_widgets_attrs(form, attrs):
         field.widget.attrs = field.widget.build_attrs(attrs_)
 
 
+def get_model_class_from_string(model_path):
+    """Returns a certain model as defined in a string formatted `<app_name>.<model_name>`.
+
+    Example:
+
+        model = get_model_class_from_string('myapp.MyModel')
+
+    """
+    try:
+        app_name, model_name = model_path.split('.')
+    except ValueError:
+        raise ImproperlyConfigured('`%s` must have the following format: `app_name.model_name`.' % model_path)
+
+    if apps_get_model is None:
+        model = get_model(app_name, model_name)
+    else:
+        try:
+            model = apps_get_model(app_name, model_name)
+        except (LookupError, ValueError):
+            model = None
+
+    if model is None:
+        raise ImproperlyConfigured('`%s` refers to a model `%s` that has not been installed.' % (model_path, model_name))
+
+    return model
+
+
 def get_model_class_from_settings(settings_module, settings_entry_name):
     """Returns a certain model as defined in a given settings module.
 
@@ -43,20 +70,4 @@ def get_model_class_from_settings(settings_module, settings_entry_name):
             model = get_model_class_from_settings(settings, 'MY_MODEL')
 
     """
-    try:
-        app_name, model_name = getattr(settings_module, settings_entry_name).split('.')
-    except ValueError:
-        raise ImproperlyConfigured('`%s` must have the following format: `app_name.model_name`.' % settings_entry_name)
-
-    if apps_get_model is None:
-        model = get_model(app_name, model_name)
-    else:
-        try:
-            model = apps_get_model(app_name, model_name)
-        except (LookupError, ValueError):
-            model = None
-
-    if model is None:
-        raise ImproperlyConfigured('`%s` refers to a model `%s` that has not been installed.' % (settings_entry_name, model_name))
-
-    return model
+    return get_model_class_from_string(getattr(settings_module, settings_entry_name))
