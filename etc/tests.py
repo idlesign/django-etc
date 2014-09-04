@@ -18,7 +18,7 @@ class MyForm(forms.Form):
 class MyParentModel(models.Model):
 
     code = models.CharField('dummy', max_length=64)
-    expired = models.BooleanField('Expired', help_text='dummy')
+    expired = models.BooleanField('Expired', help_text='dummy', default=False)
 
     class Meta:
         abstract = True
