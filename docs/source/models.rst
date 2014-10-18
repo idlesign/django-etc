@@ -106,3 +106,36 @@ This might be handy if you allow users of your app to extend/override your built
 
 
 After that ``get_my_model`` will always return an appropriate model class object even if it is customized by a user.
+
+
+choices_list
+------------
+
+* **etc.toolbox.choices_list** helps to define choices for models, that could be addressed later as dictionaries.
+
+To be used in conjunction with ``get_choices``.
+
+.. code-block:: python
+
+    class MyModel(models.Model):
+
+        TYPE_ONE = 1
+        TYPE_TWO = 2
+
+        TYPES = choices_list(
+            (TYPE_ONE, 'Type one title'),
+            (TYPE_TWO, 'Type two title'),
+        )
+
+        type = models.PositiveIntegerField('My type', choices=get_choices(TYPES), default=TYPE_TWO)
+
+        def get_display_type(self):
+            return self.TYPES[self.type]
+
+
+get_choices
+-----------
+
+* **etc.toolbox.get_choices** returns model field choices from a given choices list.
+
+Choices list is defined with ``choices_list``.

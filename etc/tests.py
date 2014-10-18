@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from .models import InheritedModel
 from .templatetags.model_meta import model_meta_verbose_name, model_meta_verbose_name_plural
 from .templatetags.gravatar import gravatar_get_url, gravatar_get_img
-from .toolbox import set_form_widgets_attrs
+from .toolbox import set_form_widgets_attrs, choices_list, get_choices
 
 
 class MyForm(forms.Form):
@@ -106,3 +106,29 @@ class GravatarTemplateTagsTest(unittest.TestCase):
         self.assertIn('retro', url)
         self.assertIn('retro', url)
         self.assertIn('<img src="', url)
+
+
+class ChoicesTest(unittest.TestCase):
+
+    def test_choices(self):
+
+        types_dict = choices_list(
+            (1, 'T1'),
+            (2, 'T2'),
+        )
+
+        self.assertEqual(len(types_dict), 2)
+        self.assertEqual(types_dict[1], 'T1')
+        self.assertEqual(types_dict[2], 'T2')
+
+        self.assertEqual(list(types_dict.keys()), [1, 2])
+
+        ch = get_choices(types_dict)
+        self.assertEqual(len(ch), 2)
+
+        self.assertEqual(ch[0][0], 1)
+        self.assertEqual(ch[0][1], 'T1')
+
+        self.assertEqual(ch[1][0], 2)
+        self.assertEqual(ch[1][1], 'T2')
+
