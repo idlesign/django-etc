@@ -1,6 +1,11 @@
 django-etc changelog
 ====================
 
+v0.5.0
+------
++ Implemented choices_list() and get_choices().
+
+
 v0.4.0
 ------
 + Implemented get_model_class_from_string().
