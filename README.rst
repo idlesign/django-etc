@@ -23,6 +23,10 @@ Models:
 
 * **etc.toolbox.get_model_class_from_settings** allows getting model class from its string representation in settings module.
 
+* **etc.toolbox.choices_list** helps to define choices for models, that could be addressed later as dictionaries.
+
+* **etc.toolbox.get_choices** returns model field choices from a given choices list.
+
 
 Forms:
 
