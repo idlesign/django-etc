@@ -1,5 +1,7 @@
 from django import template
 from django.conf import settings
+from django.core.paginator import Page
+from django.db.models.query import QuerySet
 
 # TODO tests
 register = template.Library()
@@ -11,12 +13,12 @@ def model_field_verbose_name(parser, token):
     Two notations are acceptable:
 
         1. Two arguments:
-           {% model_field_verbose_name from myfield %}
+           {% model_field_verbose_name from mymodel.myfield %}
 
            Is used to render verbose name of `myfield`.
 
         2. Four arguments:
-           {% model_field_verbose_name from myfield as myvar %}
+           {% model_field_verbose_name from mymodel.myfield as myvar %}
 
            Is used to put `myfield` verbose name into `myvar` template variable.
 
@@ -30,12 +32,12 @@ def model_field_help_text(parser, token):
     Two notations are acceptable:
 
         1. Two arguments:
-           {% model_field_help_text from myfield %}
+           {% model_field_help_text from mymodel.myfield %}
 
            Is used to render verbose name of `myfield`.
 
         2. Four arguments:
-           {% model_field_help_text from myfield as myvar %}
+           {% model_field_help_text from mymodel.myfield as myvar %}
 
            Is used to put `myfield` verbose name into `myvar` template variable.
 
@@ -97,6 +99,13 @@ class FieldAttrNode(template.Node):
                 raise template.TemplateSyntaxError('`%s` template tag error: `%s` model '
                                                    'is not found in context.' % (self.tag_name, var_model))
             return return_contents('')
+
+        # Allow operations on homogeneous sets -- Pages and Query Sets.
+        if isinstance(model, Page):
+            model = model.object_list
+
+        if isinstance(model, QuerySet):
+            model = model.model
 
         fields_name_map = model._meta._name_map
 

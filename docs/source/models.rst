@@ -90,12 +90,12 @@ to be able to customize field attributes (e.g. texts) of a base-parent model.
         {% model_field_help_text from my_model.fieldname %}
 
 
-Both template tags are capable to redirect output into a template context variable using *as* clause:
+Both template tags are capable to redirect output into a template context variable using *as* clause. That could
+be useful if you have a set of homogeneous objects (e.g. QuerySet or Page) and want to get verbose name just once:
 
 .. code-block:: html
 
-    {% load model_field %}
-    {% model_field_help_text from my_model.fieldname as help_text %}
+    {% model_field_verbose_name from my_models_set.fieldname as title_fieldname %}
 
 
 get_model_class_from_string
