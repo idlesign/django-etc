@@ -1,7 +1,7 @@
 from django import template
 from django.conf import settings
 
-
+# TODO tests
 register = template.Library()
 
 
