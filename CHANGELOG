@@ -1,6 +1,11 @@
 django-etc changelog
 ====================
 
+v0.6.1
+------
++ `model_field_verbose_name` and `model_field_help_text` now work with sets of homogeneous objects (e.g. QuerySet or Page).
+
+
 v0.6.0
 ------
 + Implemented `model_field_verbose_name` and `model_field_help_text` template tags.
