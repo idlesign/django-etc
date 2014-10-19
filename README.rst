@@ -35,6 +35,12 @@ Forms:
 
 Template tags:
 
+* `model_field`:
+
+    * **model_field_verbose_name** returns model field verbose name.
+
+    * **model_field_help_text** returns model field help text.
+
 * `model_meta`:
 
     * **model_meta_verbose_name** returns model verbose name singular.
