@@ -8,6 +8,12 @@ https://github.com/idlesign/django-etc
 .. image:: https://pypip.in/d/django-etc/badge.png
         :target: https://crate.io/packages/django-etc
 
+.. image:: https://coveralls.io/repos/idlesign/django-etc/badge.png
+    :target: https://coveralls.io/r/idlesign/django-etc
+
+.. image:: https://travis-ci.org/idlesign/django-etc.svg?branch=master
+    :target: https://travis-ci.org/idlesign/django-etc
+
 
 Description
 -----------
