@@ -1,8 +1,7 @@
 from os import environ
 from collections import OrderedDict
-from functools import partial
 
-from django import forms
+from django import forms, VERSION
 from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase
 from django.db import models
@@ -343,5 +342,7 @@ class GetSiteUrlTest(TestCase):
 
         del environ['SITE_DOMAIN']
         del environ['SITE_URL']
-        Site._meta.installed = False
-        self.assertEqual(get_site_url(), 'ftp://undefined-domain.local')
+
+        if VERSION < (1, 7):
+            Site._meta.installed = False
+            self.assertEqual(get_site_url(), 'ftp://undefined-domain.local')
