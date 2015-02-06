@@ -1,6 +1,12 @@
 django-etc changelog
 ====================
 
+v0.7.0
+------
++ Implemented `get_site_url` function.
+* Fixed possible attribute error in `model_field_verbose_name` and `model_field_help_text`.
+
+
 v0.6.1
 ------
 + `model_field_verbose_name` and `model_field_help_text` now work with sets of homogeneous objects (e.g. QuerySet or Page).
