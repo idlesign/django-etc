@@ -1,12 +1,15 @@
+from os import environ
+
 from django import forms
-from django.utils import unittest
+from django.test import TestCase
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 
 from .models import InheritedModel
 from .templatetags.model_meta import model_meta_verbose_name, model_meta_verbose_name_plural
 from .templatetags.gravatar import gravatar_get_url, gravatar_get_img
-from .toolbox import set_form_widgets_attrs, choices_list, get_choices
+from .toolbox import set_form_widgets_attrs, choices_list, get_choices, get_site_url
 
 
 class MyForm(forms.Form):
@@ -44,7 +47,7 @@ class MyChildModel2(InheritedModel, MyParentModel):
 ######################################################################################
 
 
-class InheritedModelTest(unittest.TestCase):
+class InheritedModelTest(TestCase):
 
     def test_texts(self):
         model1 = MyChildModel1()
@@ -58,7 +61,7 @@ class InheritedModelTest(unittest.TestCase):
         self.assertEqual(fields['expired'].help_text, 'dummy')
 
 
-class ModelMetaTemplateTagsTest(unittest.TestCase):
+class ModelMetaTemplateTagsTest(TestCase):
 
     def test_verbose_name_singular(self):
         m = MyChildModel1
@@ -69,7 +72,7 @@ class ModelMetaTemplateTagsTest(unittest.TestCase):
         self.assertEqual(model_meta_verbose_name_plural(m), 'VerbPlural')
 
 
-class FormTest(unittest.TestCase):
+class FormTest(TestCase):
 
     def test_set_form_widgets_attrs(self):
         f = MyForm()
@@ -79,7 +82,7 @@ class FormTest(unittest.TestCase):
         self.assertIn('id_field2">f2:</label> <input class="clickable', output)
 
 
-class GravatarTemplateTagsTest(unittest.TestCase):
+class GravatarTemplateTagsTest(TestCase):
 
     def test_verbose_get_url(self):
         u = User(username='idle')
@@ -108,7 +111,7 @@ class GravatarTemplateTagsTest(unittest.TestCase):
         self.assertIn('<img src="', url)
 
 
-class ChoicesTest(unittest.TestCase):
+class ChoicesTest(TestCase):
 
     def test_choices(self):
 
@@ -132,3 +135,36 @@ class ChoicesTest(unittest.TestCase):
         self.assertEqual(ch[1][0], 2)
         self.assertEqual(ch[1][1], 'T2')
 
+
+class GetSiteUrlTest(TestCase):
+
+    def test_basic(self):
+        self.assertEqual(get_site_url(), 'http://example.com')
+
+        with self.settings(SITE_PROTO='htt'):
+            self.assertEqual(get_site_url(), 'htt://example.com')
+            environ['SITE_PROTO'] = 'ttp'
+            self.assertEqual(get_site_url(), 'ttp://example.com')
+
+        environ['SITE_PROTO'] = 'https'
+        self.assertEqual(get_site_url(), 'https://example.com')
+
+        environ['SITE_SCHEME'] = 'ftp'
+        self.assertEqual(get_site_url(), 'https://example.com')
+
+        del environ['SITE_PROTO']
+        self.assertEqual(get_site_url(), 'ftp://example.com')
+
+        environ['SITE_URL'] = 'http://pythonz.net'
+        self.assertEqual(get_site_url(), 'http://pythonz.net')
+
+        environ['SITE_DOMAIN'] = 'mydomain.loc'
+        self.assertEqual(get_site_url(), 'ftp://mydomain.loc')
+
+        environ['SITE_URL'] = 'http://pythonz.net'
+        self.assertEqual(get_site_url(), 'ftp://mydomain.loc')
+
+        del environ['SITE_DOMAIN']
+        del environ['SITE_URL']
+        Site._meta.installed = False
+        self.assertEqual(get_site_url(), 'ftp://undefined-domain.local')

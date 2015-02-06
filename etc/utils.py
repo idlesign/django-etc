@@ -23,3 +23,12 @@ class InheritedModelMetaclass(ModelBase):
                                 setattr(field, field_attr, field_val)
             setattr(cl, texts_marker, True)
         return cl
+
+
+class DomainGetter(object):
+
+    def __init__(self, domain):
+        self.domain = domain
+
+    def get_host(self):
+        return self.domain

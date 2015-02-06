@@ -15,6 +15,11 @@ Description
 *Tiny stuff for Django that won't fit into separate apps.*
 
 
+Utils:
+
+* **etc.toolbox.get_site_url** does its best to provide you with a site URL where request object is unavailable.
+
+
 Models:
 
 * **etc.models.InheritedModel** allows to override fields attributes in inherited models.

@@ -1,6 +1,14 @@
+from os import environ
+from functools import partial
 from collections import OrderedDict
 
+from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+
+try:
+    from django.contrib.sites.shortcuts import get_current_site
+except ImportError:  # Django < 1.7
+    from django.contrib.sites.models import get_current_site
 
 try:
     from django.apps import apps
@@ -8,6 +16,8 @@ try:
 except ImportError:  # Django < 1.7
     from django.db.models import get_model
     apps_get_model = None
+
+from .utils import DomainGetter
 
 
 def choices_list(*choices):
@@ -114,3 +124,49 @@ def get_model_class_from_settings(settings_module, settings_entry_name):
 
     """
     return get_model_class_from_string(getattr(settings_module, settings_entry_name))
+
+
+def get_site_url():
+    """Tries to get a site URL from environment and settings
+    in the following order:
+
+    1. (SITE_PROTO / SITE_SCHEME) + SITE_DOMAIN
+    2. SITE_URL
+    3. Django Sites contrib
+
+    :return:
+    """
+
+    env = partial(environ.get)
+    settings_ = partial(getattr, settings)
+
+    domain = None
+    proto = None
+    url = None
+
+    for src in (env, settings_):
+        if url is None:
+            url = src('SITE_URL', None)
+
+        if domain is None:
+            domain = src('SITE_DOMAIN', None)
+
+        if proto is None:
+            proto = src('SITE_PROTO', src('SITE_SCHEME', None))
+
+    if proto is None:
+        proto = 'http'
+
+    if domain is None and url is not None:
+        proto, domain = url.split('://')[:2]
+
+    if domain is None:
+        site = get_current_site(DomainGetter(domain))
+        domain = site.domain
+
+    if domain is None:
+        domain = 'undefined-domain.local'
+
+    domain = domain.rstrip('/')
+
+    return '%s://%s' % (proto, domain)
