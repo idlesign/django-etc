@@ -1,15 +1,21 @@
 from os import environ
+from collections import OrderedDict
+from functools import partial
 
 from django import forms
+from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from django.template.base import Template, TemplateSyntaxError
+from django.template.context import Context
 
 from .models import InheritedModel
 from .templatetags.model_meta import model_meta_verbose_name, model_meta_verbose_name_plural
 from .templatetags.gravatar import gravatar_get_url, gravatar_get_img
-from .toolbox import set_form_widgets_attrs, choices_list, get_choices, get_site_url
+from .toolbox import set_form_widgets_attrs, choices_list, get_choices, get_site_url, get_model_class_from_string, \
+    get_model_class_from_settings
 
 
 class MyForm(forms.Form):
@@ -72,14 +78,165 @@ class ModelMetaTemplateTagsTest(TestCase):
         self.assertEqual(model_meta_verbose_name_plural(m), 'VerbPlural')
 
 
+class ModelFieldTemplateTagsTest(TestCase):
+
+    @classmethod
+    def render(cls, string, context):
+        return Template(string).render(Context(context))
+
+    def test_model_field_verbose_name(self):
+        result = self.render(
+            "{% load model_field %}{% model_field_verbose_name from model.first_name %}",
+            {'model': User()}
+        )
+        self.assertEqual(result, 'first name')
+
+        #
+        # `from` missing
+        self.assertRaises(
+            TemplateSyntaxError,
+            self.render,
+            "{% load model_field %}{% model_field_verbose_name model.first_name %}", {}
+        )
+
+        #
+        # `as` clause
+        context = {'model': User()}
+        result = self.render(
+            "{% load model_field %}{% model_field_verbose_name from model.first_name as a %}",
+            context
+        )
+        self.assertEqual(result, '')
+        self.assertEqual(context['a'], 'first name')
+
+        #
+        # Wrong model-field delimiter.
+        result = self.render(
+            "{% load model_field %}{% model_field_verbose_name from model-first_name %}",
+            context
+        )
+        self.assertEqual(result, '')
+
+        with self.settings(DEBUG=True):
+            self.assertRaises(
+                TemplateSyntaxError,
+                self.render,
+                "{% load model_field %}{% model_field_verbose_name from model-first_name %}", {}
+            )
+
+        #
+        # No model in context.
+        result = self.render(
+            "{% load model_field %}{% model_field_verbose_name from model.first_name %}",
+            {}
+        )
+        self.assertEqual(result, '')
+
+        with self.settings(DEBUG=True):
+            self.assertRaises(
+                TemplateSyntaxError,
+                self.render,
+                "{% load model_field %}{% model_field_verbose_name from model.first_name %}", {}
+            )
+
+        #
+        # No field.
+        result = self.render(
+            "{% load model_field %}{% model_field_verbose_name from model.unknown %}",
+            context
+        )
+        self.assertEqual(result, '')
+
+        with self.settings(DEBUG=True):
+            self.assertRaises(
+                TemplateSyntaxError,
+                self.render,
+                "{% load model_field %}{% model_field_verbose_name from model.unknown %}", context
+            )
+
+    def test_model_field_help_text(self):
+        result = self.render(
+            "{% load model_field %}{% model_field_help_text from model.is_staff %}",
+            {'model': User()}
+        )
+        self.assertIn('whether the user can log', result)
+
+        #
+        # `from` missing
+        self.assertRaises(
+            TemplateSyntaxError,
+            self.render,
+            "{% load model_field %}{% model_field_help_text %}", {}
+        )
+
+        #
+        # `as` clause
+        context = {'model': User()}
+        result = self.render(
+            "{% load model_field %}{% model_field_help_text from model.is_staff as a %}",
+            context
+        )
+        self.assertEqual(result, '')
+        self.assertIn('whether the user can log', context['a'])
+
+        #
+        # Wrong model-field delimiter.
+        result = self.render(
+            "{% load model_field %}{% model_field_help_text from model-is_staff %}",
+            context
+        )
+        self.assertEqual(result, '')
+
+        with self.settings(DEBUG=True):
+            self.assertRaises(
+                TemplateSyntaxError,
+                self.render,
+                "{% load model_field %}{% model_field_help_text from model-is_staff %}", {}
+            )
+
+        #
+        # No model in context.
+        result = self.render(
+            "{% load model_field %}{% model_field_help_text from model.is_staff %}",
+            {}
+        )
+        self.assertEqual(result, '')
+
+        with self.settings(DEBUG=True):
+            self.assertRaises(
+                TemplateSyntaxError,
+                self.render,
+                "{% load model_field %}{% model_field_help_text from model.is_staff %}", {}
+            )
+
+        #
+        # No field.
+        result = self.render(
+            "{% load model_field %}{% model_field_help_text from model.unknown %}",
+            context
+        )
+        self.assertEqual(result, '')
+
+        with self.settings(DEBUG=True):
+            self.assertRaises(
+                TemplateSyntaxError,
+                self.render,
+                "{% load model_field %}{% model_field_help_text from model.unknown %}", context
+            )
+
+
 class FormTest(TestCase):
 
     def test_set_form_widgets_attrs(self):
         f = MyForm()
-        set_form_widgets_attrs(f, {'class': 'clickable'})
+        d = OrderedDict()
+        d['class'] = 'clickable'
+        d['data-a'] = lambda f: f.__class__.__name__
+        set_form_widgets_attrs(f, d)
         output = f.as_p()
-        self.assertIn('id_field1">f1:</label> <input class="clickable', output)
-        self.assertIn('id_field2">f2:</label> <input class="clickable', output)
+
+        self.assertIn('class="clickable" data-a="CharField" id="id_field1"', output)
+        self.assertIn('class="clickable" data-a="CharField" id="id_field2"', output)
 
 
 class GravatarTemplateTagsTest(TestCase):
@@ -102,6 +259,8 @@ class GravatarTemplateTagsTest(TestCase):
         self.assertIn('retro', url)
         self.assertIn('101', url)
 
+        self.assertEqual(gravatar_get_url(None), '')
+
     def test_verbose_get_img(self):
         u = User(username='idle')
         url = gravatar_get_img(u, 101, 'retro')
@@ -109,6 +268,8 @@ class GravatarTemplateTagsTest(TestCase):
         self.assertIn('retro', url)
         self.assertIn('retro', url)
         self.assertIn('<img src="', url)
+
+        self.assertEqual(gravatar_get_img(None), '')
 
 
 class ChoicesTest(TestCase):
@@ -134,6 +295,22 @@ class ChoicesTest(TestCase):
 
         self.assertEqual(ch[1][0], 2)
         self.assertEqual(ch[1][1], 'T2')
+
+
+class GetModelClassTest(TestCase):
+
+    def test_from_settings(self):
+        attr_name = 'some'
+        fake_settings = type('fake', (object,), {attr_name: 'auth.User'})
+
+        self.assertIs(get_model_class_from_settings(fake_settings, attr_name), User)
+
+    def test_from_string(self):
+        cl = get_model_class_from_string('auth.User')
+        self.assertIs(cl, User)
+
+        self.assertRaises(ImproperlyConfigured, get_model_class_from_string, 'some')
+        self.assertRaises(ImproperlyConfigured, get_model_class_from_string, 'etc.InheritedModel')
 
 
 class GetSiteUrlTest(TestCase):
