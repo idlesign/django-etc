@@ -1,0 +1,8 @@
+strictness: medium
+uses:
+    - django
+autodetect: yes
+ignore-paths:
+    - docs
+    - etc/migrations
+    - etc/south_migrations
