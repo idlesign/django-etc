@@ -1,11 +1,16 @@
 from django import template, VERSION as DJANGO_VERSION
 from django.conf import settings
 from django.core.paginator import Page
-from django.core.exceptions import FieldDoesNotExist
 from django.db.models.query import QuerySet
 
 
 django18plus = DJANGO_VERSION >= (1, 8)
+
+if django18plus:
+    from django.core.exceptions import FieldDoesNotExist
+else:
+    FieldDoesNotExist = KeyError
+
 register = template.Library()
 
 
@@ -127,7 +132,7 @@ class FieldAttrNode(template.Node):
 
             contents = getattr(model_field, self.attr_name)
 
-        except (KeyError, FieldDoesNotExist):
+        except FieldDoesNotExist:
             contents = ''
             if settings.DEBUG:
                 raise template.TemplateSyntaxError(
