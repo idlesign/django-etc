@@ -1,8 +1,11 @@
-from django import template
+from django import template, VERSION as DJANGO_VERSION
 from django.conf import settings
 from django.core.paginator import Page
+from django.core.exceptions import FieldDoesNotExist
 from django.db.models.query import QuerySet
 
+
+django18plus = DJANGO_VERSION >= (1, 8)
 register = template.Library()
 
 
@@ -117,9 +120,14 @@ class FieldAttrNode(template.Node):
             fields_name_map = {f.attname: (f,) for f in model._meta.fields}
 
         try:
-            model_field = fields_name_map[field_name][0]
+            if django18plus:
+                model_field = model._meta.get_field(field_name)
+            else:
+                model_field = fields_name_map[field_name][0]
+
             contents = getattr(model_field, self.attr_name)
-        except KeyError:
+
+        except (KeyError, FieldDoesNotExist):
             contents = ''
             if settings.DEBUG:
                 raise template.TemplateSyntaxError(
