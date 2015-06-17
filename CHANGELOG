@@ -1,6 +1,11 @@
 django-etc changelog
 ====================
 
+v0.7.1
+------
+* Improved Django 1.8 support.
+
+
 v0.7.0
 ------
 + Implemented `get_site_url` function.
