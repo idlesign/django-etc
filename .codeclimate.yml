@@ -1,0 +1,10 @@
+languages:
+  JavaScript: true
+  Python: true
+
+exclude_paths:
+- "etc/runtests.py"
+- "etc/tests.py"
+- "etc/migrations/*"
+- "etc/south_migrations/*"
+- "docs/*"
