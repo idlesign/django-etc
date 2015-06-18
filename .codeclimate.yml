@@ -5,6 +5,7 @@ languages:
 exclude_paths:
 - "etc/runtests.py"
 - "etc/tests.py"
+- "etc/tests/*"
 - "etc/migrations/*"
 - "etc/south_migrations/*"
 - "docs/*"
