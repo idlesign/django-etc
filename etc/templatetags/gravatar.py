@@ -6,6 +6,7 @@ except ImportError:
     from urllib import urlencode
 
 from django import template
+from django.template.defaultfilters import safe
 from django.contrib.auth import get_user_model
 
 USER_MODEL = get_user_model()
@@ -29,7 +30,8 @@ def get_gravatar_url(obj, size=65, default='identicon'):
         email = obj
 
     if email:
-        return 'http://www.gravatar.com/avatar/%s/?%s' % (hashlib.md5(email.encode()).hexdigest(), urlencode({'size': size, 'd': default}))
+        return ('http://www.gravatar.com/avatar/%s/?%s' %
+                (hashlib.md5(email.encode()).hexdigest(), urlencode({'size': size, 'd': default})))
     return ''
 
 
@@ -66,5 +68,5 @@ def gravatar_get_img(obj, size=65, default='identicon'):
     """
     url = get_gravatar_url(obj, size=size, default=default)
     if url:
-        return '<img src="%s" class="gravatar">' % url
+        return safe('<img src="%s" class="gravatar">' % url)
     return ''
