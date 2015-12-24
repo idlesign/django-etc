@@ -1,6 +1,12 @@
 django-etc changelog
 ====================
 
+v0.7.2
+------
+* `gravatar_get_img` now returns a safe string.
+* Improved Django 1.9 support.
+
+
 v0.7.1
 ------
 * Improved Django 1.8 support.
