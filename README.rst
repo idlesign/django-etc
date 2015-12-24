@@ -17,8 +17,8 @@ https://github.com/idlesign/django-etc
 .. image:: https://img.shields.io/travis/idlesign/django-etc/master.svg
     :target: https://travis-ci.org/idlesign/django-etc
 
-.. image:: https://img.shields.io/codeclimate/github/idlesign/django-etc.svg
-   :target: https://codeclimate.com/github/idlesign/django-etc
+.. image:: https://landscape.io/github/idlesign/django-etc/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/idlesign/django-etc/master
 
 
 Description
