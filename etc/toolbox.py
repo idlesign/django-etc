@@ -126,22 +126,24 @@ def get_model_class_from_settings(settings_module, settings_entry_name):
     return get_model_class_from_string(getattr(settings_module, settings_entry_name))
 
 
-def get_site_url():
+def get_site_url(request=None):
     """Tries to get a site URL from environment and settings
     in the following order:
 
     1. (SITE_PROTO / SITE_SCHEME) + SITE_DOMAIN
     2. SITE_URL
     3. Django Sites contrib
+    4. Request object
 
-    :return:
+    :param HttpRequest request: Request object to deduce URL from.
+    :rtype: str
+
     """
-
     env = partial(environ.get)
     settings_ = partial(getattr, settings)
 
     domain = None
-    proto = None
+    scheme = None
     url = None
 
     for src in (env, settings_):
@@ -151,22 +153,25 @@ def get_site_url():
         if domain is None:
             domain = src('SITE_DOMAIN', None)
 
-        if proto is None:
-            proto = src('SITE_PROTO', src('SITE_SCHEME', None))
-
-    if proto is None:
-        proto = 'http'
+        if scheme is None:
+            scheme = src('SITE_PROTO', src('SITE_SCHEME', None))
 
     if domain is None and url is not None:
-        proto, domain = url.split('://')[:2]
+        scheme, domain = url.split('://')[:2]
 
     if domain is None:
-        site = get_current_site(DomainGetter(domain))
+        site = get_current_site(request or DomainGetter(domain))
         domain = site.domain
+
+    if scheme is None and request:
+        scheme = request.scheme
 
     if domain is None:
         domain = 'undefined-domain.local'
 
+    if scheme is None:
+        scheme = 'http'
+
     domain = domain.rstrip('/')
 
-    return '%s://%s' % (proto, domain)
+    return '%s://%s' % (scheme, domain)
