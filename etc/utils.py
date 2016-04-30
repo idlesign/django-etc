@@ -27,6 +27,8 @@ class InheritedModelMetaclass(ModelBase):
 
 class DomainGetter(object):
 
+    __slots__ = ['domain']
+
     def __init__(self, domain):
         self.domain = domain
 
