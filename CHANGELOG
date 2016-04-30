@@ -2,8 +2,8 @@ django-etc changelog
 ====================
 
 
-Unreleased
-----------
+v0.8.0
+------
 + Implemented `{% site_url %}` template tag.
 + `get_site_url()` now accpets Request object.
 
