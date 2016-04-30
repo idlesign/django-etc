@@ -1,6 +1,13 @@
 django-etc changelog
 ====================
 
+
+Unreleased
+----------
++ Implemented `{% site_url %}` template tag.
++ `get_site_url()` now accpets Request object.
+
+
 v0.7.2
 ------
 * `gravatar_get_img` now returns a safe string.

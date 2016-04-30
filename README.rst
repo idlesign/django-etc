@@ -29,7 +29,7 @@ Description
 
 Utils:
 
-* **etc.toolbox.get_site_url** does its best to provide you with a site URL where request object is unavailable.
+* **etc.toolbox.get_site_url** does its best to provide you with a site URL whether request object is unavailable or not.
 
 
 Models:
@@ -69,6 +69,10 @@ Template tags:
     * **gravatar_get_url** returns Gravatar image URL for a given string or UserModel.
 
     * **gravatar_get_img** returns Gravatar image HTML tag for a given string or UserModel.
+
+* `etc_misc`
+
+    * **site_url** does its best to provide you with a site URL whether request object is unavailable or not.
 
 
 
