@@ -352,7 +352,11 @@ class GetSiteUrlTest(EtcTestCase):
         del environ['SITE_SCHEME']
 
         class FakeRequest(object):
+
             scheme = 'xyz'
+
+            def get_host(self):
+                return 'fake'
 
         self.assertEqual(get_site_url(request=FakeRequest), 'xyz://example.com')
 
