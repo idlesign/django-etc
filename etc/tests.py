@@ -51,8 +51,14 @@ class MyChildModel2(InheritedModel, MyParentModel):
 
 ######################################################################################
 
+class EtcTestCase(TestCase):
 
-class InheritedModelTest(TestCase):
+    @classmethod
+    def render(cls, string, context):
+        return Template(string).render(Context(context))
+
+
+class InheritedModelTest(EtcTestCase):
 
     def test_texts(self):
         model1 = MyChildModel1()
@@ -66,7 +72,7 @@ class InheritedModelTest(TestCase):
         self.assertEqual(fields['expired'].help_text, 'dummy')
 
 
-class ModelMetaTemplateTagsTest(TestCase):
+class ModelMetaTemplateTagsTest(EtcTestCase):
 
     def test_verbose_name_singular(self):
         m = MyChildModel1
@@ -77,11 +83,7 @@ class ModelMetaTemplateTagsTest(TestCase):
         self.assertEqual(model_meta_verbose_name_plural(m), 'VerbPlural')
 
 
-class ModelFieldTemplateTagsTest(TestCase):
-
-    @classmethod
-    def render(cls, string, context):
-        return Template(string).render(Context(context))
+class ModelFieldTemplateTagsTest(EtcTestCase):
 
     def test_model_field_verbose_name(self):
         result = self.render(
@@ -224,7 +226,7 @@ class ModelFieldTemplateTagsTest(TestCase):
             )
 
 
-class FormTest(TestCase):
+class FormTest(EtcTestCase):
 
     def test_set_form_widgets_attrs(self):
         f = MyForm()
@@ -238,7 +240,7 @@ class FormTest(TestCase):
         self.assertIn('class="clickable" data-a="CharField" id="id_field2"', output)
 
 
-class GravatarTemplateTagsTest(TestCase):
+class GravatarTemplateTagsTest(EtcTestCase):
 
     def test_verbose_get_url(self):
         u = User(username='idle')
@@ -271,7 +273,7 @@ class GravatarTemplateTagsTest(TestCase):
         self.assertEqual(gravatar_get_img(None), '')
 
 
-class ChoicesTest(TestCase):
+class ChoicesTest(EtcTestCase):
 
     def test_choices(self):
 
@@ -296,7 +298,7 @@ class ChoicesTest(TestCase):
         self.assertEqual(ch[1][1], 'T2')
 
 
-class GetModelClassTest(TestCase):
+class GetModelClassTest(EtcTestCase):
 
     def test_from_settings(self):
         attr_name = 'some'
@@ -312,7 +314,7 @@ class GetModelClassTest(TestCase):
         self.assertRaises(ImproperlyConfigured, get_model_class_from_string, 'etc.InheritedModel')
 
 
-class GetSiteUrlTest(TestCase):
+class GetSiteUrlTest(EtcTestCase):
 
     def test_basic(self):
         self.assertEqual(get_site_url(), 'http://example.com')
@@ -346,3 +348,17 @@ class GetSiteUrlTest(TestCase):
         if VERSION < (1, 7):
             Site._meta.installed = False
             self.assertEqual(get_site_url(), 'ftp://undefined-domain.local')
+
+        del environ['SITE_SCHEME']
+
+        class FakeRequest(object):
+            scheme = 'xyz'
+
+        self.assertEqual(get_site_url(request=FakeRequest), 'xyz://example.com')
+
+    def test_tempalte_tag(self):
+        url = 'http://pythonz.net'
+
+        environ['SITE_URL'] = url
+        result = self.render('{% load etc_misc %}{% site_url %}', {})
+        self.assertEqual(result, url)
