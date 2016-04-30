@@ -355,7 +355,8 @@ class GetSiteUrlTest(EtcTestCase):
 
             scheme = 'xyz'
 
-            def get_host(self):
+            @classmethod
+            def get_host(cls):
                 return 'fake'
 
         self.assertEqual(get_site_url(request=FakeRequest), 'xyz://example.com')
