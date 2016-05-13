@@ -2,6 +2,12 @@ django-etc changelog
 ====================
 
 
+Unreleased
+----------
++ Added import_app_module() function.
++ Added import_project_modules() function.
+
+
 v0.8.0
 ------
 + Implemented `{% site_url %}` template tag.

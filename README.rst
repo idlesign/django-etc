@@ -31,6 +31,10 @@ Utils:
 
 * **etc.toolbox.get_site_url** does its best to provide you with a site URL whether request object is unavailable or not.
 
+* **etc.toolbox.import_app_module** imports and returns a module from a specific app by its name.
+
+* **etc.toolbox.import_project_modules** imports modules from registered apps using given module name and returns them as a list.
+
 
 Models:
 

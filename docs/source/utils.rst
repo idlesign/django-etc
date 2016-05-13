@@ -2,6 +2,41 @@ Various utils
 =============
 
 
+import_app_module
+-----------------
+
+**etc.toolbox.import_app_module** imports and returns a module from a specific app by its name.
+
+If your application provides some kind of tooling for others and you know that configuration
+for this tooling could be found in a certain module within a thirdparty app you can use this function
+to load such a module by its name.
+
+.. code-block:: python
+
+    from etc.toolbox import import_app_module
+
+
+    module = import_app_module('someapp', 'mymodule')  # Get `mymodule` module from `someapp` application.
+
+
+
+import_project_modules
+----------------------
+
+**etc.toolbox.import_project_modules** imports modules from registered apps using given module name and returns them as a list.
+
+This is an automation for `import_app_module()` described above to load all modules from every app in a project.
+
+
+.. code-block:: python
+
+    from etc.toolbox import import_project_modules
+
+
+    all_modules = import_project_modules('mymodule')  # Get `mymodule` module from every app in a project.
+
+
+
 get_site_url
 ------------
 
