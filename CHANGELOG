@@ -2,8 +2,8 @@ django-etc changelog
 ====================
 
 
-Unreleased
-----------
+v0.9.0
+------
 + Added import_app_module() function.
 + Added import_project_modules() function.
 
