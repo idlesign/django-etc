@@ -14,7 +14,7 @@ from .models import InheritedModel
 from .templatetags.model_meta import model_meta_verbose_name, model_meta_verbose_name_plural
 from .templatetags.gravatar import gravatar_get_url, gravatar_get_img
 from .toolbox import set_form_widgets_attrs, choices_list, get_choices, get_site_url, get_model_class_from_string, \
-    get_model_class_from_settings
+    get_model_class_from_settings, import_app_module, import_project_modules
 
 
 class MyForm(forms.Form):
@@ -360,10 +360,28 @@ class GetSiteUrlTest(EtcTestCase):
             Site._meta.installed = False
             self.assertEqual(get_site_url(), 'http://undefined-domain.local')
 
-
     def test_tempalte_tag(self):
         url = 'http://pythonz.net'
 
         environ['SITE_URL'] = url
         result = self.render('{% load etc_misc %}{% site_url %}', {})
         self.assertEqual(result, url)
+
+
+class ImportModulesTest(EtcTestCase):
+
+    def test_import_app_module(self):
+        m = import_app_module('etc', 'utils')
+        self.assertTrue(hasattr(m, 'ModelBase'))
+
+        self.assertRaises(ImportError, import_app_module, 'unknown', 'uknown')
+
+        m = import_app_module('etc', 'uknown')
+        self.assertIsNone(m)
+
+    def test_import_project_modules(self):
+        m = import_project_modules('utils')
+
+        self.assertTrue(len(m)==1)
+        self.assertTrue(hasattr(m[0], 'ModelBase'))
+
