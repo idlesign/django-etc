@@ -201,7 +201,9 @@ def import_app_module(app_name, module_name):
         return sub_module
 
     except:
-        if module_has_submodule(module, module_name):
+
+        # The same bubbling strategy as in autodiscover_modules().
+        if module_has_submodule(module, module_name):  # Module is in a package.
             raise
 
         return None
