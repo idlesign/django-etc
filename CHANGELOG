@@ -2,6 +2,11 @@ django-etc changelog
 ====================
 
 
+v0.9.1
+------
+* Fixed import_app_module() handling of app config paths.
+
+
 v0.9.0
 ------
 + Added import_app_module() function.
