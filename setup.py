@@ -30,6 +30,9 @@ setup(
     classifiers=[
         # As in https://pypi.python.org/pypi?:action=list_classifiers
         'Development Status :: 4 - Beta',
+        'Environment :: Web Environment',
+        'Framework :: Django',
+        'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
