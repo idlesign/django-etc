@@ -380,8 +380,8 @@ class ImportModulesTest(EtcTestCase):
         self.assertIsNone(m)
 
     def test_import_project_modules(self):
-        m = import_project_modules('utils')
+        m = import_project_modules('toolbox')
 
-        self.assertTrue(len(m)==1)
-        self.assertTrue(hasattr(m[0], 'ModelBase'))
+        self.assertTrue(len(m) == 1)
+        self.assertTrue(hasattr(m[0], 'get_site_url'))
 

@@ -195,7 +195,12 @@ def import_app_module(app_name, module_name):
     :rtype: module or None
 
     """
+    name_split = app_name.split('.')
+    if name_split[-1][0].isupper():  # Seems that we have app config class path here.
+        app_name = '.'.join(name_split[:-2])
+
     module = import_module(app_name)
+
     try:
         sub_module = import_module('%s.%s' % (app_name, module_name))
         return sub_module
