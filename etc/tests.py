@@ -379,6 +379,9 @@ class ImportModulesTest(EtcTestCase):
         m = import_app_module('etc', 'uknown')
         self.assertIsNone(m)
 
+        m = import_app_module('django.contrib.admin.apps.SimpleAdminConfig', '__init__')
+        self.assertTrue(hasattr(m, 'site'))
+
     def test_import_project_modules(self):
         m = import_project_modules('toolbox')
 
