@@ -387,4 +387,3 @@ class ImportModulesTest(EtcTestCase):
 
         self.assertTrue(len(m) == 1)
         self.assertTrue(hasattr(m[0], 'get_site_url'))
-
