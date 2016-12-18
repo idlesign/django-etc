@@ -2,6 +2,11 @@ django-etc changelog
 ====================
 
 
+Unreleased
+----------
+* Package distribution fix.
+
+
 v0.9.1
 ------
 * Fixed import_app_module() handling of app config paths.
