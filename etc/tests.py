@@ -236,8 +236,8 @@ class FormTest(EtcTestCase):
         set_form_widgets_attrs(f, d)
         output = f.as_p()
 
-        self.assertIn('class="clickable" data-a="CharField" id="id_field1"', output)
-        self.assertIn('class="clickable" data-a="CharField" id="id_field2"', output)
+        self.assertTrue(output.count('data-a') == 2)
+        self.assertTrue(output.count('clickable') == 2)
 
 
 class GravatarTemplateTagsTest(EtcTestCase):
