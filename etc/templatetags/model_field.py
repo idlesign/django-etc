@@ -59,7 +59,7 @@ def _get_model_field_attr(tag_name, attr_name, token):
     if tokens_num not in (3, 5):
         raise template.TemplateSyntaxError(
             '`%(tag_name)s` tag requires two or four arguments. '
-            'E.g.: {%% %(tag_name)s myfield %%} or {%% %(tag_name)s myfield as myvar %%}.'
+            'E.g.: {%% %(tag_name)s from myfield %%} or {%% %(tag_name)s from myfield as myvar %%}.'
             % {'tag_name': tag_name}
         )
 
