@@ -102,13 +102,18 @@ class ModelFieldTemplateTagsTest(EtcTestCase):
 
         #
         # `as` clause
-        context = {'model': User()}
+        context = {'model': User(), 'field': 'first_name'}
         result = self.render(
             "{% load model_field %}{% model_field_verbose_name from model.first_name as a %}",
             context
         )
         self.assertEqual(result, '')
         self.assertEqual(context['a'], 'first name')
+
+        # field in a variable
+        result = self.render(
+            "{% load model_field %}{% model_field_verbose_name from model.field %}", context)
+        self.assertEqual(result, 'first name')
 
         #
         # Wrong model-field delimiter.

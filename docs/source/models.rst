@@ -98,6 +98,9 @@ be useful if you have a set of homogeneous objects (e.g. QuerySet or Page) and w
     {% model_field_verbose_name from my_models_set.fieldname as title_fieldname %}
 
 
+.. note:: `fieldname` could be a literal field name or a template variable containing the name.
+
+
 get_model_class_from_string
 ---------------------------
 

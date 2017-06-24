@@ -59,7 +59,7 @@ def _get_model_field_attr(tag_name, attr_name, token):
     if tokens_num not in (3, 5):
         raise template.TemplateSyntaxError(
             '`%(tag_name)s` tag requires two or four arguments. '
-            'E.g.: {%% %(tag_name)s from myfield %%} or {%% %(tag_name)s from myfield as myvar %%}.'
+            'E.g.: {%% %(tag_name)s from model.field %%} or {%% %(tag_name)s from model.field as myvar %%}.'
             % {'tag_name': tag_name}
         )
 
@@ -89,6 +89,9 @@ class FieldAttrNode(template.Node):
                 context[as_var] = contents
                 return ''
             return contents
+
+        def get_field(model, field_name):
+            return model._meta.get_field(field_name) if django18plus else fields_name_map[field_name][0]
 
         var_field = template.Variable(self.field)
         var_model = var_field.lookups[0]
@@ -125,14 +128,19 @@ class FieldAttrNode(template.Node):
             fields_name_map = {f.attname: (f,) for f in model._meta.fields}
 
         try:
-            if django18plus:
-                model_field = model._meta.get_field(field_name)
-            else:
-                model_field = fields_name_map[field_name][0]
+
+            try:
+                # case #1: field name is literal
+                model_field = get_field(model, field_name)
+
+            except FieldDoesNotExist:
+                # case #1: field name is a variable
+                field_name = template.Variable(field_name).resolve(context)
+                model_field = get_field(model, field_name)
 
             contents = getattr(model_field, self.attr_name)
 
-        except FieldDoesNotExist:
+        except (FieldDoesNotExist, template.VariableDoesNotExist):
             contents = ''
             if settings.DEBUG:
                 raise template.TemplateSyntaxError(
@@ -141,6 +149,6 @@ class FieldAttrNode(template.Node):
                         self.tag_name,
                         field_name,
                         model.__class__.__name__,
-                        ', '.join(fields_name_map.keys()))
-                )
+                        ', '.join(fields_name_map.keys())))
+
         return return_contents(contents)
