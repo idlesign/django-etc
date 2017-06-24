@@ -2,8 +2,8 @@ django-etc changelog
 ====================
 
 
-Unreleased
-----------
+v0.10.0
+-------
 + 'model_field' template tags now work with field names from template variables
 
 
