@@ -2,6 +2,11 @@ django-etc changelog
 ====================
 
 
+Unreleased
+----------
+* Dropped support for Python<3.4 and Django<1.7.
+
+
 v0.10.0
 -------
 + 'model_field' template tags now work with field names from template variables

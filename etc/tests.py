@@ -361,10 +361,6 @@ class GetSiteUrlTest(EtcTestCase):
 
         self.assertEqual(get_site_url(request=FakeRequest), 'xyz://example.com')
 
-        if VERSION < (1, 7):
-            Site._meta.installed = False
-            self.assertEqual(get_site_url(), 'http://undefined-domain.local')
-
     def test_tempalte_tag(self):
         url = 'http://pythonz.net'
 
