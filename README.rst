@@ -5,9 +5,6 @@ https://github.com/idlesign/django-etc
 .. image:: https://img.shields.io/pypi/v/django-etc.svg
     :target: https://pypi.python.org/pypi/django-etc
 
-.. image:: https://img.shields.io/pypi/dm/django-etc.svg
-    :target: https://pypi.python.org/pypi/django-etc
-
 .. image:: https://img.shields.io/pypi/l/django-etc.svg
     :target: https://pypi.python.org/pypi/django-etc
 
