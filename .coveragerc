@@ -1,3 +1,3 @@
 [run]
 include = etc/*
-omit = etc/runtests.py, etc/tests.py
+omit = etc/tests/*

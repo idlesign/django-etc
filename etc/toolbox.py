@@ -53,7 +53,7 @@ def choices_list(*choices):
             def get_display_type(self):
                 return self.TYPES[self.type]
 
-    :param set|list choices:
+    :param set|list|tuple choices:
     :rtype: OrderedDict
     :return: Choices ordered dictionary
     """
