@@ -1,0 +1,6 @@
+{% load etc_misc %}
+<body>{% block main %}{% endblock %}
+{% include_ "sub_static.html" %}
+{% include_ "sub_{{ postfix_var }}.html" with a=postfix_var %}
+{% include_ "sub_{{ bogus }}.html" fallback "default.html" %}
+</body>

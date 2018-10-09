@@ -75,6 +75,8 @@ Template tags:
 
     * **site_url** does its best to provide you with a site URL whether request object is unavailable or not.
 
+    * **include_** allows a template name to include template variables. Allows fallback template if the target is not found.
+
 
 
 Documentation

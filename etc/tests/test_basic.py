@@ -2,6 +2,7 @@ from collections import OrderedDict
 from os import environ
 
 import pytest
+from django import VERSION
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
@@ -267,3 +268,9 @@ class TestImportModules(object):
 
         assert len(m) == 1
         assert hasattr(m[0], 'get_site_url')
+
+
+@pytest.mark.skipif(VERSION < (1, 8, 0), reason='Django 1.8+ required')
+def test_include_formatted(request_client):
+    result = request_client().get('/index/')
+    assert result.content == b'\n<body>thisone\nstatic\n<sub>dynamic</sub>\ndefault\n</body>'

@@ -72,3 +72,18 @@ this function tries to get it from *environment* and *settings*, using the follo
 
         {% load etc_misc %}
         {% site_url %}
+
+
+* **include_** tag.
+
+    Similar to built-in ``include`` template tag, but allowing
+    template variables to be used in template name and a fallback template,
+    thus making the tag more dynamic.
+
+    .. warning:: Requires Django 1.8+
+
+    .. code-block:: html
+
+        {% load etc_misc %}
+        {% include_ "sub_{{ postfix_var }}.html" fallback "default.html" %}
+
