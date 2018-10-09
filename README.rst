@@ -24,7 +24,8 @@ Description
 *Tiny stuff for Django that won't fit into separate apps.*
 
 
-Utils:
+Utils
+~~~~~
 
 * **etc.toolbox.get_site_url** does its best to provide you with a site URL whether request object is unavailable or not.
 
@@ -33,7 +34,8 @@ Utils:
 * **etc.toolbox.import_project_modules** imports modules from registered apps using given module name and returns them as a list.
 
 
-Models:
+Models
+~~~~~~
 
 * **etc.models.InheritedModel** allows to override fields attributes in inherited models.
 
@@ -46,12 +48,14 @@ Models:
 * **etc.toolbox.get_choices** returns model field choices from a given choices list.
 
 
-Forms:
+Forms
+~~~~~
 
 * **etc.toolbox.set_form_widgets_attrs** allows bulk apply HTML attributes to every field widget of a given form.
 
 
-Template tags:
+Template tags
+~~~~~~~~~~~~~
 
 * `model_field`:
 
