@@ -55,27 +55,27 @@ Template tags:
 
 * `model_field`:
 
-    * **model_field_verbose_name** returns model field verbose name.
+  * **model_field_verbose_name** returns model field verbose name.
 
-    * **model_field_help_text** returns model field help text.
+  * **model_field_help_text** returns model field help text.
 
 * `model_meta`:
 
-    * **model_meta_verbose_name** returns model verbose name singular.
+  * **model_meta_verbose_name** returns model verbose name singular.
 
-    * **model_meta_verbose_name_plural** returns model verbose name plural.
+  * **model_meta_verbose_name_plural** returns model verbose name plural.
 
 * `gravatar`
 
-    * **gravatar_get_url** returns Gravatar image URL for a given string or UserModel.
+  * **gravatar_get_url** returns Gravatar image URL for a given string or UserModel.
 
-    * **gravatar_get_img** returns Gravatar image HTML tag for a given string or UserModel.
+  * **gravatar_get_img** returns Gravatar image HTML tag for a given string or UserModel.
 
 * `etc_misc`
 
-    * **site_url** does its best to provide you with a site URL whether request object is unavailable or not.
+  * **site_url** does its best to provide you with a site URL whether request object is unavailable or not.
 
-    * **include_** allows a template name to include template variables. Allows fallback template if the target is not found.
+  * **include_** allows a template name to include template variables. Allows fallback template if the target is not found.
 
 
 
