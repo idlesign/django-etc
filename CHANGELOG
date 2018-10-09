@@ -2,8 +2,8 @@ django-etc changelog
 ====================
 
 
-Unreleased
-----------
+v0.11.0
+-------
 + Added advanced 'include_' template tag.
 + Django 2.0 and 2.1 basic compatibility.
 * Dropped support for Python<3.4 and Django<1.7.
