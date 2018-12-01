@@ -2,6 +2,11 @@ django-etc changelog
 ====================
 
 
+Unreleased
+----------
+* Fixed 'render_' thread safety issue.
+
+
 v0.11.0
 -------
 + Added advanced 'include_' template tag.
