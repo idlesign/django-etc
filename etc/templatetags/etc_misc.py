@@ -1,10 +1,11 @@
+from copy import deepcopy
 from functools import partial
 
 from django import VERSION
 from django import template
 from django.template import TemplateDoesNotExist
 from django.template.base import UNKNOWN_SOURCE, Lexer, Parser
-from django.template.loader_tags import do_include, IncludeNode
+from django.template.loader_tags import do_include, Node
 
 try:
     from django.template.loader_tags import construct_relative_path
@@ -43,44 +44,47 @@ def site_url(context):
     return get_site_url(request=context.get('request', None))
 
 
-class DynamicIncludeNode(IncludeNode):
+class DynamicIncludeNode(Node):
 
-    def __init__(self, *args, **kwargs):
+    context_key = '__include_context'
+
+    def __init__(self, template, *args, extra_context=None, isolated_context=False, **kwargs):
         self.fallback = kwargs.pop('fallback', None)
+
+        # Below is implementation from Django 2.1 generic IncludeNode.
+        self.template = template
+        self.extra_context = extra_context or {}
+        self.isolated_context = isolated_context
         super(DynamicIncludeNode, self).__init__(*args, **kwargs)
 
-    if VERSION >= (2, 1, 0):
+    def render_(self, tpl_new, context):
 
-        def render_(self, tpl_new, context):
-            template = self.template
+        template = deepcopy(self.template)  # Do not mess with global template for threadsafety.
+        template.var = tpl_new  # Cheat a little
 
-            tpl_old = template.var
-            template.var = tpl_new
+        # Below is implementation from Django 2.1 generic IncludeNode.
 
-            try:
-                return super(DynamicIncludeNode, self).render(context)
-
-            finally:
-                template.var = tpl_old
-
-    else:
-
-        # Now we need to turn on context.template.engine.debug to raise exception
-        # as in 2.1+
-        def render_(self, tpl_new, context):
-            template = self.template
-
-            tpl_old = template.var
-            template.var = tpl_new
-            debug_old = context.template.engine.debug
-            context.template.engine.debug = True
-
-            try:
-                return super(DynamicIncludeNode, self).render(context)
-
-            finally:
-                template.var = tpl_old
-                context.template.engine.debug = debug_old
+        template = template.resolve(context)
+        # Does this quack like a Template?
+        if not callable(getattr(template, 'render', None)):
+            # If not, try the cache and get_template().
+            template_name = template
+            cache = context.render_context.dicts[0].setdefault(self, {})
+            template = cache.get(template_name)
+            if template is None:
+                template = context.template.engine.get_template(template_name)
+                cache[template_name] = template
+        # Use the base.Template of a backends.django.Template.
+        elif hasattr(template, 'template'):
+            template = template.template
+        values = {
+            name: var.resolve(context)
+            for name, var in self.extra_context.items()
+        }
+        if self.isolated_context:
+            return template.render(context.new(values))
+        with context.push(**values):
+            return template.render(context)
 
     def render(self, context):
         render_ = self.render_
