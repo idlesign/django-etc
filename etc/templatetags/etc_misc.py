@@ -48,13 +48,11 @@ class DynamicIncludeNode(Node):
 
     context_key = '__include_context'
 
-    def __init__(self, template, *args, extra_context=None, isolated_context=False, **kwargs):
+    def __init__(self, template, *args, **kwargs):
         self.fallback = kwargs.pop('fallback', None)
-
-        # Below is implementation from Django 2.1 generic IncludeNode.
         self.template = template
-        self.extra_context = extra_context or {}
-        self.isolated_context = isolated_context
+        self.extra_context = kwargs.pop('extra_context', {})
+        self.isolated_context = kwargs.pop('isolated_context', False)
         super(DynamicIncludeNode, self).__init__(*args, **kwargs)
 
     def render_(self, tpl_new, context):
