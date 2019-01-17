@@ -5,6 +5,7 @@ django-etc changelog
 Unreleased
 ----------
 ! Dropped QA for Python 3.4.
+* No functional changes. Celebrating 1.0.0.
 
 
 v0.11.1
