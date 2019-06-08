@@ -44,8 +44,11 @@ to be able to customize field attributes (e.g. texts) of a base-parent model.
 
 
 
-`model_meta` Template Tags
---------------------------
+Template Tags
+-------------
+
+model_meta
+~~~~~~~~~~
 
 * **model_meta_verbose_name** tag.
 
@@ -67,8 +70,8 @@ to be able to customize field attributes (e.g. texts) of a base-parent model.
         {% model_meta_verbose_name_plural my_model %}
 
 
-`model_field` Template Tags
----------------------------
+model_field
+~~~~~~~~~~~
 
 * **model_field_verbose_name** tag.
 
@@ -101,8 +104,11 @@ be useful if you have a set of homogeneous objects (e.g. QuerySet or Page) and w
 .. note:: `fieldname` could be a literal field name or a template variable containing the name.
 
 
+Getting models
+--------------
+
 get_model_class_from_string
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * **etc.toolbox.get_model_class_from_string** allows getting model class from its string representation.
 
@@ -115,7 +121,7 @@ Returns a certain model as defined in a string formatted ``<app_name>.<model_nam
 
 
 get_model_class_from_settings
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **etc.toolbox.get_model_class_from_settings** allows getting model class from its string representation in settings module.
 
@@ -142,10 +148,48 @@ This might be handy if you allow users of your app to extend/override your built
 After that ``get_my_model`` will always return an appropriate model class object even if it is customized by a user.
 
 
-choices_list
-------------
+Models choices
+--------------
 
-* **etc.toolbox.choices_list** helps to define choices for models, that could be addressed later as dictionaries.
+ChoicesEnumMixin
+~~~~~~~~~~~~~~~~
+
+**etc.toolbox.ChoicesEnumMixin** helps to define choices for models using ``Enum`` from Python 3.
+
+To be used in conjunction with ``get_choices``.
+
+.. code-block:: python
+
+        from enum import Enum, unique
+
+        @unique
+        class Role(ChoicesEnumMixin, Enum):
+
+            # Define your Enum with mixin:
+            # Item values could be tuples: (value, title, hint).
+
+            APPLICANT = 0, 'Title', 'Hint'
+            ADMIN = 1, 'Administrator'
+            MEMBER = 2
+
+        class MyChoiceModel(models.Model):
+
+            # Use the enum in field declaration.
+            role = models.PositiveIntegerField(choices=get_choices(Role), default=Role.MEMBER)
+
+        # Filter objects by enum values.
+        members = MyChoiceModel.objects.filter(role=Role.MEMBER)
+
+        # Access titles and hints registries
+        # (ordered dictionaries, indexed by values):
+        titles = Role.titles
+        hints = Role.hints
+
+
+choices_list
+~~~~~~~~~~~~
+
+**etc.toolbox.choices_list** helps to define choices for models, that could be addressed later as dictionaries.
 
 To be used in conjunction with ``get_choices``.
 
@@ -168,8 +212,8 @@ To be used in conjunction with ``get_choices``.
 
 
 get_choices
------------
+~~~~~~~~~~~
 
-* **etc.toolbox.get_choices** returns model field choices from a given choices list.
+**etc.toolbox.get_choices** returns model field choices from a given choices list.
 
 Choices list is defined with ``choices_list``.

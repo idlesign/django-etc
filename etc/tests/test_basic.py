@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from os import environ
+from sys import version_info
 
 import pytest
 from django import VERSION
@@ -155,6 +156,45 @@ class TestGravatarTemplateTags(object):
 
 
 class TestChoices(object):
+
+    @pytest.mark.skipif(version_info.major == 2, reason='No Enum in Python 2')
+    def test_enum(self):
+
+        from etc.tests.testapp.models import Role, MyChoiceModel, Variant
+
+        assert Role.APPLICANT is Role(0)
+        assert Role.APPLICANT.value == 0
+        assert Role.APPLICANT.title == 'Applicant'
+        assert Role.APPLICANT.hint == 'Description'
+
+        assert Role.ADMIN is Role(1)
+        assert Role.ADMIN.value == 1
+        assert Role.ADMIN.title == 'Administrator'
+        assert Role.ADMIN.hint == ''
+
+        assert Role.MEMBER is Role(2)
+        assert Role.MEMBER.value == 2
+        assert Role.MEMBER.title == 'Member'
+        assert Role.MEMBER.hint == ''
+
+        assert Role.get_title(2) == 'Member'
+        assert Role.get_title(Role(2)) == 'Member'
+        assert Role.get_title(Role.MEMBER) == 'Member'
+
+        assert Role.get_hint(0) == 'Description'
+        assert Role.get_hint(Role(0)) == 'Description'
+        assert Role.get_hint(Role.APPLICANT) == 'Description'
+
+        objects = MyChoiceModel.objects
+
+        obj_1 = objects.create()
+        obj_2 = objects.create(role=Role.ADMIN, variant=Variant.B)
+
+        assert obj_1.role is Role.MEMBER
+        assert obj_1.variant is Variant.A
+
+        assert obj_1.id == objects.get(role=Role.MEMBER).id
+        assert obj_2.id == objects.get(variant=Variant.B).id
 
     def test_choices(self):
 
