@@ -5,7 +5,7 @@ Model Related Bits
 InheritedModel
 --------------
 
-**etc.models.InheritedModel** allows to override fields attributes in inherited models.
+**etc.toolbox.InheritedModel** allows to override fields attributes in inherited models.
 
 Mix in this class into target model (inherit from it) and define `Fields` class inside it
 to be able to customize field attributes (e.g. texts) of a base-parent model.
@@ -13,7 +13,7 @@ to be able to customize field attributes (e.g. texts) of a base-parent model.
 
 .. code-block:: python
 
-    from etc.models import InheritedModel
+    from etc.toolbox import InheritedModel
 
 
     class MyAbstractModel(models.Model):

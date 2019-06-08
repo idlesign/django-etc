@@ -252,7 +252,7 @@ class TestImportModules(object):
 
     def test_import_app_module(self):
         m = import_app_module('etc', 'utils')
-        assert hasattr(m, 'ModelBase')
+        assert hasattr(m, 'DomainGetter')
 
         with pytest.raises(ImportError):
             import_app_module('unknown', 'uknown')

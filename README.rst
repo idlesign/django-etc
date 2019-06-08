@@ -43,7 +43,7 @@ Utils
 Models
 ~~~~~~
 
-* **etc.models.InheritedModel** allows to override fields attributes in inherited models.
+* **etc.toolbox.InheritedModel** allows to override fields attributes in inherited models.
 
 * **etc.toolbox.get_model_class_from_string** allows getting model class from its string representation.
 
