@@ -251,7 +251,7 @@ class TestGetSiteUrl(object):
 class TestImportModules(object):
 
     def test_import_app_module(self):
-        m = import_app_module('etc', 'utils')
+        m = import_app_module('etc', 'sites')
         assert hasattr(m, 'DomainGetter')
 
         with pytest.raises(ImportError):
