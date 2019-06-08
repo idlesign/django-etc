@@ -156,7 +156,7 @@ ChoicesEnumMixin
 
 **etc.toolbox.ChoicesEnumMixin** helps to define choices for models using ``Enum`` from Python 3.
 
-To be used in conjunction with ``get_choices``.
+Could be used in conjunction with ``get_choices`` for convenience.
 
 .. code-block:: python
 
@@ -216,4 +216,4 @@ get_choices
 
 **etc.toolbox.get_choices** returns model field choices from a given choices list.
 
-Choices list is defined with ``choices_list``.
+Choices list is defined with ``choices_list`` or ``ChoicesEnumMixin``, see above.
