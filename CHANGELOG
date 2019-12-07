@@ -2,6 +2,11 @@ django-etc changelog
 ====================
 
 
+Unreleased
+----------
++ Add Django 3.0 compatibility. Effectively deprecates Py2 support.
+
+
 v1.1.0
 ------
 ! Dropped QA for Django 1.7.

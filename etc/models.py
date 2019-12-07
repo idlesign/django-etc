@@ -1,7 +1,6 @@
 from django.apps import apps
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models.base import ModelBase
-from django.utils import six
 
 
 class InheritedModelMetaclass(ModelBase):
@@ -28,7 +27,7 @@ class InheritedModelMetaclass(ModelBase):
         return cl
 
 
-class InheritedModel(six.with_metaclass(InheritedModelMetaclass)):
+class InheritedModel(metaclass=InheritedModelMetaclass):
     """Mix in this class into target model (inherit from it) and define `Fields` class inside it
     to be able to customize field attributes (e.g. texts) of a base-parent model.
 
