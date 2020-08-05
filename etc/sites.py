@@ -1,22 +1,24 @@
 from functools import partial
 from os import environ
+from typing import Optional
 
 from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
+from django.http import HttpRequest
 
 
-class DomainGetter(object):
+class DomainGetter:
 
     __slots__ = ['domain']
 
-    def __init__(self, domain):
+    def __init__(self, domain: Optional[str]):
         self.domain = domain
 
-    def get_host(self):
+    def get_host(self) -> Optional[str]:
         return self.domain
 
 
-def get_site_url(request=None):
+def get_site_url(request: HttpRequest = None) -> str:
     """Tries to get a site URL from environment and settings
     in the following order:
 
@@ -25,8 +27,7 @@ def get_site_url(request=None):
     3. Django Sites contrib
     4. Request object
 
-    :param HttpRequest request: Request object to deduce URL from.
-    :rtype: str
+    :param request: Request object to deduce URL from.
 
     """
     env = partial(environ.get)
@@ -64,4 +65,4 @@ def get_site_url(request=None):
 
     domain = domain.rstrip('/')
 
-    return '%s://%s' % (scheme, domain)
+    return f'{scheme}://{domain}'

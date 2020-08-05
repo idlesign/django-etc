@@ -1,9 +1,7 @@
-from collections import OrderedDict
 from os import environ
 from sys import version_info
 
 import pytest
-from django import VERSION
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
@@ -24,7 +22,7 @@ class MyForm(forms.Form):
 from etc.tests.testapp.models import MyChildModel1, MyChildModel2
 
 
-class TestInheritedModel(object):
+class TestInheritedModel:
 
     def test_texts(self):
         model1 = MyChildModel1()
@@ -38,7 +36,7 @@ class TestInheritedModel(object):
         assert fields['expired'].help_text == 'dummy'
 
 
-class TestModelMetaTemplateTags(object):
+class TestModelMetaTemplateTags:
 
     def test_verbose_name_singular(self):
         m = MyChildModel1
@@ -49,7 +47,7 @@ class TestModelMetaTemplateTags(object):
         assert model_meta_verbose_name_plural(m) == 'VerbPlural'
 
 
-class TestModelFieldTemplateTags(object):
+class TestModelFieldTemplateTags:
 
     def test_model_field_x(self, template_render_tag, template_context, settings):
 
@@ -106,12 +104,12 @@ class TestModelFieldTemplateTags(object):
         check('model_field_help_text', 'whether the user can log', 'model.is_staff')
 
 
-class TestForm(object):
+class TestForm:
 
     def test_set_form_widgets_attrs(self):
         f = MyForm()
 
-        d = OrderedDict()
+        d = {}
         d['class'] = 'clickable'
         d['data-a'] = lambda f: f.__class__.__name__
 
@@ -122,7 +120,7 @@ class TestForm(object):
         assert output.count('clickable') == 2
 
 
-class TestGravatarTemplateTags(object):
+class TestGravatarTemplateTags:
 
     def test_verbose_get_url(self):
         u = User(username='idle')
@@ -155,7 +153,7 @@ class TestGravatarTemplateTags(object):
         assert gravatar_get_img(None) == ''
 
 
-class TestChoices(object):
+class TestChoices:
 
     @pytest.mark.skipif(version_info.major == 2, reason='No Enum in Python 2')
     def test_enum(self):
@@ -219,7 +217,7 @@ class TestChoices(object):
         assert ch[1][1] == 'T2'
 
 
-class TestGetModelClass(object):
+class TestGetModelClass:
 
     def test_from_settings(self):
         attr_name = 'some'
@@ -238,7 +236,7 @@ class TestGetModelClass(object):
             get_model_class_from_string('etc.InheritedModel')
 
 
-class TestGetSiteUrl(object):
+class TestGetSiteUrl:
 
     def test_basic(self, settings):
         assert get_site_url() == 'http://example.com'
@@ -270,7 +268,7 @@ class TestGetSiteUrl(object):
         del environ['SITE_URL']
         del environ['SITE_SCHEME']
 
-        class FakeRequest(object):
+        class FakeRequest:
 
             scheme = 'xyz'
 
@@ -288,7 +286,7 @@ class TestGetSiteUrl(object):
         assert result == url
 
 
-class TestImportModules(object):
+class TestImportModules:
 
     def test_import_app_module(self):
         m = import_app_module('etc', 'sites')
@@ -310,7 +308,6 @@ class TestImportModules(object):
         assert hasattr(m[0], 'get_site_url')
 
 
-@pytest.mark.skipif(VERSION < (1, 8, 0), reason='Django 1.8+ required')
 def test_include_formatted(request_client):
     result = request_client().get('/index/')
     assert result.content == b'\n<body>thisone\nstatic\n<sub>dynamic</sub>\ndefault\n</body>'

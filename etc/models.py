@@ -1,29 +1,45 @@
+from types import ModuleType
+from typing import Type
+
 from django.apps import apps
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models.base import ModelBase
+from django.db.models.base import ModelBase, Model
 
 
 class InheritedModelMetaclass(ModelBase):
 
     def __new__(cls, name, bases, attrs):
         cl = super(InheritedModelMetaclass, cls).__new__(cls, name, bases, attrs)
+
         texts_marker = '_texts_applied'
+
         if not getattr(cl, texts_marker, False):
             try:
                 names_map = {f.name: f for f in cl._meta.fields}
+
             except AttributeError:
                 return cl
+
             fields_cl = getattr(cl, 'Fields', None)
+
             if fields_cl is not None:
                 for attr_name, val in fields_cl.__dict__.items():
-                    if not attr_name.startswith('_'):
-                        if attr_name in names_map:
-                            field = names_map[attr_name]
-                            if not isinstance(val, dict):
-                                val = {'verbose_name': val}
-                            for field_attr, field_val in val.items():
-                                setattr(field, field_attr, field_val)
+                    if attr_name.startswith('_'):
+                        continue
+
+                    if attr_name not in names_map:
+                        continue
+
+                    field = names_map[attr_name]
+
+                    if not isinstance(val, dict):
+                        val = {'verbose_name': val}
+
+                    for field_attr, field_val in val.items():
+                        setattr(field, field_attr, field_val)
+
             setattr(cl, texts_marker, True)
+
         return cl
 
 
@@ -66,7 +82,7 @@ class InheritedModel(metaclass=InheritedModelMetaclass):
     """
 
 
-def get_model_class_from_string(model_path):
+def get_model_class_from_string(model_path: str) -> Type[Model]:
     """Returns a certain model as defined in a string formatted `<app_name>.<model_name>`.
 
     Example:
@@ -76,8 +92,10 @@ def get_model_class_from_string(model_path):
     """
     try:
         app_name, model_name = model_path.split('.')
+
     except ValueError:
-        raise ImproperlyConfigured('`%s` must have the following format: `app_name.model_name`.' % model_path)
+        raise ImproperlyConfigured(
+            f'`{model_path}` must have the following format: `app_name.model_name`.')
 
     try:
         model = apps.get_model(app_name, model_name)
@@ -86,12 +104,13 @@ def get_model_class_from_string(model_path):
         model = None
 
     if model is None:
-        raise ImproperlyConfigured('`%s` refers to a model `%s` that has not been installed.' % (model_path, model_name))
+        raise ImproperlyConfigured(
+            f'`{model_path}` refers to a model `{model_name}` that has not been installed.')
 
     return model
 
 
-def get_model_class_from_settings(settings_module, settings_entry_name):
+def get_model_class_from_settings(settings_module: ModuleType, settings_entry_name: str):
     """Returns a certain model as defined in a given settings module.
 
     Example:

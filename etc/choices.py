@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from typing import Union, Set, List, Tuple, Dict, Type, Any
 
 
 class ChoicesEnumMixin:
@@ -50,7 +50,7 @@ class ChoicesEnumMixin:
             mapping = getattr(cls, name, None)
 
             if mapping is None:
-                mapping = OrderedDict()
+                mapping = {}
                 setattr(cls, name, mapping)
 
             mapping[value] = val
@@ -99,11 +99,11 @@ class ChoicesEnumMixin:
         return int(self.value)
 
     @classmethod
-    def get_title(cls, item):
+    def get_title(cls, item) -> str:
         """Returns a title for a variant instance or it's value.
 
         :param item:
-        :rtype: str
+
         """
         if isinstance(item, cls):
             return item.title
@@ -111,11 +111,11 @@ class ChoicesEnumMixin:
         return cls.titles[item]
 
     @classmethod
-    def get_hint(cls, item):
+    def get_hint(cls, item) -> str:
         """Returns a hint for a variant instance or it's value.
 
         :param item:
-        :rtype: str
+
         """
         if isinstance(item, cls):
             return item.hint
@@ -123,11 +123,13 @@ class ChoicesEnumMixin:
         return cls.hints[item]
 
 
-def choices_list(*choices):
+def choices_list(*choices: Union[Set, List, Tuple, Dict]) -> dict:
     """Helps to define choices for models, that could be addressed
     later as dictionaries.
 
     To be used in conjunction with `get_choices()`.
+
+    Returns choices ordered dictionary.
 
     .. code-block:: python
 
@@ -146,24 +148,19 @@ def choices_list(*choices):
             def get_display_type(self):
                 return self.TYPES[self.type]
 
-    :param set|list|tuple choices:
-    :rtype: OrderedDict
-    :return: Choices ordered dictionary
+    :param choices:
+
     """
-    return OrderedDict(choices)
+    return dict(choices)
 
 
-def get_choices(choices_list):
+def get_choices(choices_list: Union[Dict, Type[ChoicesEnumMixin]]) -> Tuple[Tuple[Any, Any], ...]:
     """Returns model field choices from a given choices list.
 
-    :param OrderedDict|type(ChoicesEnumMixin) choices_list:
+    :param  choices_list:
         The list can be defined with `choices_list()` or could be an `ChoicesEnumMixin` and `Enum` subclass.
 
-    :rtype: tuple
-
-    :return: Choices tuple
     """
-
     if isinstance(choices_list, type) and issubclass(choices_list, ChoicesEnumMixin):
         return tuple(choices_list.titles.items())
 

@@ -1,3 +1,6 @@
+from types import ModuleType
+from typing import Optional, List
+
 from django.utils.module_loading import module_has_submodule
 
 try:
@@ -8,12 +11,11 @@ except ImportError:
     from django.utils.importlib import import_module
 
 
-def import_app_module(app_name, module_name):
+def import_app_module(app_name: str, module_name: str) -> Optional[ModuleType]:
     """Returns a module from a given app by its name.
 
-    :param str app_name:
-    :param str module_name:
-    :rtype: module or None
+    :param app_name:
+    :param module_name:
 
     """
     name_split = app_name.split('.')
@@ -23,7 +25,7 @@ def import_app_module(app_name, module_name):
     module = import_module(app_name)
 
     try:
-        sub_module = import_module('%s.%s' % (app_name, module_name))
+        sub_module = import_module(f'{app_name}.{module_name}')
         return sub_module
 
     except:
@@ -35,12 +37,11 @@ def import_app_module(app_name, module_name):
         return None
 
 
-def import_project_modules(module_name):
+def import_project_modules(module_name: str) -> List[ModuleType]:
     """Imports modules from registered apps using given module name
     and returns them as a list.
 
-    :param str module_name:
-    :rtype: list
+    :param module_name:
 
     """
     from django.conf import settings

@@ -2,6 +2,11 @@ django-etc changelog
 ====================
 
 
+Unreleased
+----------
+* Drop support for Python 3.5.
+
+
 v1.2.0 [2019-12-07]
 -------------------
 + Add Django 3.0 compatibility. Effectively deprecates Py2 support.
