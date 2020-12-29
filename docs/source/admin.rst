@@ -5,7 +5,7 @@ Tools for Django Admin
 CustomModelPage
 ---------------
 
-**etc.admin.CustomModelPage** allows easy construction of custom admin pages based on user input.
+**etc.admin.CustomModelPage** allows easy construction of custom admin pages processing user input.
 
 Use it if you need to perform some action in admin requiring user input.
 

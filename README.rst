@@ -56,7 +56,7 @@ Models
 Admin
 ~~~~~
 
-* **etc.admin.CustomModelPage** allows easy construction of custom admin pages based on user input.
+* **etc.admin.CustomModelPage** allows easy construction of custom admin pages processing user input.
 
 
 Forms
