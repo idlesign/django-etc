@@ -26,7 +26,7 @@ Requirements
 ----
 
 1. Python 3.6+
-2. Django 1.8+
+2. Django 2.0+
 
 
 
@@ -37,6 +37,7 @@ Table of Contents
     :maxdepth: 2
 
     models
+    admin
     forms
     utils
     thirdparty

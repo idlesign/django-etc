@@ -1,10 +1,9 @@
 from copy import deepcopy
 from functools import partial
 
-from django import VERSION
 from django import template
 from django.template import TemplateDoesNotExist
-from django.template.base import UNKNOWN_SOURCE, Lexer, Parser
+from django.template.base import Lexer, Parser
 from django.template.loader_tags import do_include, Node
 
 try:
@@ -19,13 +18,7 @@ except ImportError:
 
 from ..toolbox import get_site_url
 
-if VERSION >= (1, 9, 0):
-    get_lexer = partial(Lexer)
-
-else:
-    get_lexer = partial(Lexer, origin=UNKNOWN_SOURCE)
-
-
+get_lexer = partial(Lexer)
 register = template.Library()
 
 

@@ -1,15 +1,8 @@
-from django import template, VERSION as DJANGO_VERSION
+from django import template
 from django.conf import settings
+from django.core.exceptions import FieldDoesNotExist
 from django.core.paginator import Page
 from django.db.models.query import QuerySet
-
-
-django18plus = DJANGO_VERSION >= (1, 8)
-
-if django18plus:
-    from django.core.exceptions import FieldDoesNotExist
-else:
-    FieldDoesNotExist = KeyError
 
 register = template.Library()
 
@@ -91,7 +84,7 @@ class FieldAttrNode(template.Node):
             return contents
 
         def get_field(model, field_name):
-            return model._meta.get_field(field_name) if django18plus else fields_name_map[field_name][0]
+            return model._meta.get_field(field_name)
 
         var_field = template.Variable(self.field)
         var_model = var_field.lookups[0]

@@ -4,6 +4,8 @@ django-etc changelog
 
 Unreleased
 ----------
+! Dropped support fro Django<2.0.
++ Added 'etc.admin.CustomModelPage' helper.
 * Drop support for Python 3.5.
 
 

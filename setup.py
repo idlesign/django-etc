@@ -45,7 +45,7 @@ setup(
     test_suite='tests',
     tests_require=[
         'pytest',
-        'pytest-djangoapp>=0.10.1',
+        'pytest-djangoapp>=0.15.0',
     ],
 
     classifiers=[

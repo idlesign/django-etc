@@ -30,7 +30,7 @@ Description
 Utils
 ~~~~~
 
-* **etc.toolbox.get_site_url** does its best to provide you with a site URL whether request object is unavailable or not.
+* **etc.toolbox.get_site_url** does its best to provide you with a site URL whether request object is available or not.
 
 * **etc.toolbox.import_app_module** imports and returns a module from a specific app by its name.
 
@@ -53,6 +53,12 @@ Models
 * **etc.toolbox.get_choices** returns model field choices from a given choices list.
 
 
+Admin
+~~~~~
+
+* **etc.admin.CustomModelPage** allows easy construction of custom admin pages based on user input.
+
+
 Forms
 ~~~~~
 
@@ -62,27 +68,27 @@ Forms
 Template tags
 ~~~~~~~~~~~~~
 
-* `model_field`:
+* ``model_field``:
 
   * **model_field_verbose_name** returns model field verbose name.
 
   * **model_field_help_text** returns model field help text.
 
-* `model_meta`:
+* ``model_meta``:
 
   * **model_meta_verbose_name** returns model verbose name singular.
 
   * **model_meta_verbose_name_plural** returns model verbose name plural.
 
-* `gravatar`
+* ``gravatar``
 
   * **gravatar_get_url** returns Gravatar image URL for a given string or UserModel.
 
   * **gravatar_get_img** returns Gravatar image HTML tag for a given string or UserModel.
 
-* `etc_misc`
+* ``etc_misc``
 
-  * **site_url** does its best to provide you with a site URL whether request object is unavailable or not.
+  * **site_url** does its best to provide you with a site URL whether request object is available or not.
 
   * **include_** allows a template name to include template variables. Allows fallback template if the target is not found.
 
