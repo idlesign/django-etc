@@ -21,7 +21,12 @@ Use it if you need to perform some action in admin requiring user input.
         my_field = models.CharField('some title', max_length=10)
 
         def save(self):
-            ...  # Implement data handling.
+            ...  # Implement data handling from self attributes here.
+            
+            # self.bound_admin has some useful methods.
+            # self.bound_request allows you to access current HTTP request.
+            self.bound_admin.message_success(self.bound_request, f'Hey, done!')
+            
             super().save()
 
     # Register my page within Django admin.
