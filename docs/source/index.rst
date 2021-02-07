@@ -19,12 +19,6 @@ Description
 Requirements
 ------------
 
-.. image:: https://idlesign.github.io/lbc/py2-lbc.svg
-   :target: https://idlesign.github.io/lbc/
-   :alt: LBC Python 2
-
-----
-
 1. Python 3.6+
 2. Django 2.0+
 
