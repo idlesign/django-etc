@@ -11,9 +11,6 @@ https://github.com/idlesign/django-etc
 .. image:: https://img.shields.io/coveralls/idlesign/django-etc/master.svg
     :target: https://coveralls.io/r/idlesign/django-etc
 
-.. image:: https://img.shields.io/travis/idlesign/django-etc/master.svg
-    :target: https://travis-ci.org/idlesign/django-etc
-
 
 Description
 -----------
