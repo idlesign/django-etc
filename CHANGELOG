@@ -2,6 +2,11 @@ django-etc changelog
 ====================
 
 
+Unreleased
+----------
+* Django 4.0 compatibility improved.
+
+
 v1.3.0 [2020-12-29]
 -------------------
 ! Drop support for Django<2.0.

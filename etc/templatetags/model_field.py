@@ -78,6 +78,7 @@ class FieldAttrNode(template.Node):
         as_var = self.as_var
 
         def return_contents(contents):
+            contents = f'{contents}'
             if as_var is not None:
                 context[as_var] = contents
                 return ''
