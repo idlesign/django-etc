@@ -11,7 +11,15 @@ Use it if you need to perform some action in admin requiring user input.
 
 .. code-block:: python
 
-    from etc.admin import CustomModelPage
+    from etc.admin import CustomModelPage, admins
+
+    class MyPageModelAdmin(admins.CustomPageModelAdmin):
+        fields = (
+            'my_field', 'moy_relation'
+        )
+        autocomplete_fields = (
+            'my_relation',
+        )
 
     class MyPage(CustomModelPage):
 
@@ -19,6 +27,9 @@ Use it if you need to perform some action in admin requiring user input.
 
         # Define some fields.
         my_field = models.CharField('some title', max_length=10)
+        my_relation = models.ForeignKey(MyModel, null=True)
+
+        bound_admin = MyPageModelAdmin  # set admin class for this page
 
         def save(self):
             ...  # Implement data handling from self attributes here.
