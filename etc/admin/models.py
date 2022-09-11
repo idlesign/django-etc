@@ -19,6 +19,8 @@ class CustomModelPage(models.Model):
 
             title = 'Test page 1'  # set page title
 
+            bound_admin = MyAdmin  # set admin class
+
             # Define some fields.
             my_field = models.CharField('some title', max_length=10)
 
@@ -60,7 +62,7 @@ class CustomModelPage(models.Model):
         :param admin_model:
 
         """
-        register(cls)(admin_model or CustomPageModelAdmin)
+        register(cls)(admin_model or cls.bound_admin or CustomPageModelAdmin)
 
     def save(self):  # noqa
         """Heirs should implement their own save handling."""
