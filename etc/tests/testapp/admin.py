@@ -1,12 +1,19 @@
 from django.db import models
 
-from etc.admin import CustomModelPage
+from etc.admin import CustomModelPage, admins
+
+
+class MyCustomPageModelAdmin(admins.CustomPageModelAdmin):
+    """Custom page admin."""
+    pass
 
 
 class MyPage1(CustomModelPage):
 
     title = 'Test page 1'
     my_field = models.CharField('some title', max_length=10)
+
+    bound_admin = MyCustomPageModelAdmin
 
     def save(self):
         self.bound_admin.message_warning(self.bound_request, f'test1:{self.my_field}')
