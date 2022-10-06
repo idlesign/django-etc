@@ -21,7 +21,7 @@ class CustomModelPage(models.Model):
 
             title = 'Test page 1'  # set page title
 
-            bound_admin = MyAdmin  # set admin class
+            admin_cls = MyAdmin  # set admin class
 
             # Define some fields.
             my_field = models.CharField('some title', max_length=10)
