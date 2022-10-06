@@ -2,12 +2,13 @@ from typing import Optional, TypeVar
 
 from django.contrib.admin.decorators import register
 from django.db import models
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from django.utils.translation import gettext_lazy as _
 
 from .admins import CustomPageModelAdmin, EtcAdmin
 
 TypeEtcAdmin = TypeVar('TypeEtcAdmin', bound=EtcAdmin)
+TypeHttpResponse = TypeVar('TypeHttpResponse', bound=HttpResponse)
 
 
 class CustomModelPage(models.Model):
@@ -41,7 +42,11 @@ class CustomModelPage(models.Model):
     """Application label to relate page to. Default: admin"""
 
     bound_request: Optional[HttpRequest] = None
-    """Request object bound to the model"""
+    """Request object bound runtime to this page model."""
+
+    bound_response: Optional[HttpResponse] = None
+    """Response object that could be bound runtime to pass to admin model,
+    to return in .response_add()."""
 
     admin_cls: TypeEtcAdmin = CustomPageModelAdmin
     """Django admin model class to use with this model page."""

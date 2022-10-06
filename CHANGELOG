@@ -4,7 +4,8 @@ django-etc changelog
 
 Unreleased
 ----------
-+ Intoduce 'CustomModelPage.admin_cls' for declarative customization.
++ Introduced 'CustomModelPage.admin_cls' for declarative customization.
++ Introduced 'CustomModelPage.bound_response' to allow custom responses (see #6).
 
 
 v1.3.1 [2021-12-18]

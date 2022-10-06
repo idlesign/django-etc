@@ -1,11 +1,11 @@
 from django.db import models
+from django.http import HttpResponse
 
 from etc.admin import CustomModelPage, admins
 
 
 class MyCustomPageModelAdmin(admins.CustomPageModelAdmin):
     """Custom page admin."""
-    pass
 
 
 class MyPage1(CustomModelPage):
@@ -26,7 +26,11 @@ class MyPage2(CustomModelPage):
     my_another_field = models.TextField('put data here')
 
     def save(self):
-        self.bound_admin.message_error(self.bound_request, f'test2:{self.my_another_field}')
+        val = self.my_another_field
+        self.bound_admin.message_error(self.bound_request, f'test2:{val}')
+
+        if val == 'myresponse':
+            self.bound_response = HttpResponse(b'fine')
 
 
 MyPage1.register()

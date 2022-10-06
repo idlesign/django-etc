@@ -45,6 +45,10 @@ Use it if you need to perform some action in admin requiring user input.
 
             super().save()
 
+            # to return a custom response you can assign self.bound_response
+            # this can be useful, e.g. for file downloads
+            self.bound_response = HttpResponse(b'%)')
+
 
     # Register my page within Django admin.
     MyPage.register()

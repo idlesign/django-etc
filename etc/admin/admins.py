@@ -73,6 +73,10 @@ class CustomPageModelAdmin(ReadonlyAdmin):
         return self._changeform_view(request, object_id=None, form_url='', extra_context=context)
 
     def response_add(self, request: HttpRequest, obj: 'CustomModelPage', post_url_continue=None):
+        bound_response = obj.bound_response
+        if bound_response:
+            return bound_response
+
         return HttpResponseRedirect(request.path)
 
     def save_model(self, request: HttpRequest, obj: 'CustomModelPage', form, change):
