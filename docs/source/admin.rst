@@ -11,7 +11,7 @@ Use it if you need to perform some action in admin requiring user input.
 
 .. code-block:: python
 
-    from django.contrib.admin import models
+    from django.db import models
 
     from etc.admin import CustomModelPage, admins
     from etc.tests.testapp.models import MyChildModel1
@@ -28,6 +28,7 @@ Use it if you need to perform some action in admin requiring user input.
 
 
     class MyPage(CustomModelPage):
+
         title = 'Test page 1'  # set page title
 
         # Define some fields.
