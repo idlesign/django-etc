@@ -13,7 +13,7 @@ class MyPage1(CustomModelPage):
     title = 'Test page 1'
     my_field = models.CharField('some title', max_length=10)
 
-    bound_admin = MyCustomPageModelAdmin
+    admin_cls = MyCustomPageModelAdmin
 
     def save(self):
         self.bound_admin.message_warning(self.bound_request, f'test1:{self.my_field}')

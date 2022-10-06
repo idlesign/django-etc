@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, TypeVar
 
 from django.contrib.admin.decorators import register
 from django.db import models
@@ -6,6 +6,8 @@ from django.http import HttpRequest
 from django.utils.translation import gettext_lazy as _
 
 from .admins import CustomPageModelAdmin, EtcAdmin
+
+TypeEtcAdmin = TypeVar('TypeEtcAdmin', bound=EtcAdmin)
 
 
 class CustomModelPage(models.Model):
@@ -41,8 +43,11 @@ class CustomModelPage(models.Model):
     bound_request: Optional[HttpRequest] = None
     """Request object bound to the model"""
 
+    admin_cls: TypeEtcAdmin = CustomPageModelAdmin
+    """Django admin model class to use with this model page."""
+
     bound_admin: Optional[EtcAdmin] = None
-    """Django admin model bound to this model."""
+    """Django admin model instance bound runtime to this model."""
 
     class Meta:
         abstract = True
@@ -56,13 +61,13 @@ class CustomModelPage(models.Model):
         super().__init_subclass__()
 
     @classmethod
-    def register(cls, *, admin_model: CustomPageModelAdmin = None):
+    def register(cls, *, admin_model: TypeEtcAdmin = None):
         """Registers this model page class in Django admin.
 
         :param admin_model:
 
         """
-        register(cls)(admin_model or cls.bound_admin or CustomPageModelAdmin)
+        register(cls)(admin_model or cls.admin_cls)
 
     def save(self):  # noqa
         """Heirs should implement their own save handling."""

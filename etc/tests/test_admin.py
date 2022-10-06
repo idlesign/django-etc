@@ -4,6 +4,7 @@ from etc.admin import admins
 
 from etc.tests.testapp.admin import MyPage1, MyCustomPageModelAdmin, MyPage2
 
+
 def test_custom_model_pages(request_client, user_create):
     user = user_create(superuser=True)
     client = request_client(user=user)

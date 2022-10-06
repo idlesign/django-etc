@@ -2,6 +2,11 @@ django-etc changelog
 ====================
 
 
+Unreleased
+----------
++ Intoduce 'CustomModelPage.admin_cls' for declarative customization.
+
+
 v1.3.1 [2021-12-18]
 -------------------
 * Django 4.0 compatibility improved.

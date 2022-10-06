@@ -18,6 +18,7 @@ Use it if you need to perform some action in admin requiring user input.
 
 
     class MyPageModelAdmin(admins.CustomPageModelAdmin):
+
         fields = (
             'my_field', 'moy_relation'
         )
@@ -33,7 +34,7 @@ Use it if you need to perform some action in admin requiring user input.
         my_field = models.CharField('some title', max_length=10)
         my_relation = models.ForeignKey(MyChildModel1, null=True)
 
-        bound_admin = admins.CustomPageModelAdmin  # set admin class for this page
+        admin_cls = admins.CustomPageModelAdmin  # set admin class for this page
 
         def save(self):
             ...  # Implement data handling from self attributes here.
@@ -47,5 +48,4 @@ Use it if you need to perform some action in admin requiring user input.
 
     # Register my page within Django admin.
     MyPage.register()
-
 
