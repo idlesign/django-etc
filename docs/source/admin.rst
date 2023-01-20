@@ -12,6 +12,7 @@ Use it if you need to perform some action in admin requiring user input.
 .. code-block:: python
 
     from django.db import models
+    from django.http import HttpResponse
 
     from etc.admin import CustomModelPage, admins
     from etc.tests.testapp.models import MyChildModel1
@@ -33,9 +34,9 @@ Use it if you need to perform some action in admin requiring user input.
 
         # Define some fields.
         my_field = models.CharField('some title', max_length=10)
-        my_relation = models.ForeignKey(MyChildModel1, null=True)
+        my_relation = models.ForeignKey(MyChildModel1, null=True, on_delete=models.CASCADE)
 
-        admin_cls = admins.CustomPageModelAdmin  # set admin class for this page
+        admin_cls = MyPageModelAdmin  # set admin class for this page
 
         def save(self):
             ...  # Implement data handling from self attributes here.
