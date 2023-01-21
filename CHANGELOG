@@ -2,6 +2,11 @@ django-etc changelog
 ====================
 
 
+Unreleased
+----------
+! Dropped QA for Py 3.6. Added QA for Django 4.1.
+
+
 v1.4.0 [2022-10-06]
 -------------------
 + Introduced 'CustomModelPage.admin_cls' for declarative customization.
