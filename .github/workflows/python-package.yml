@@ -38,7 +38,7 @@ jobs:
     - name: Install deps
       run: |
         uv sync --only-group tests
-        uv pip install coveralls "Django~=${{ matrix.django-version }}.0"
+        uv pip install -e . coveralls "Django~=${{ matrix.django-version }}.0"
     - uses: astral-sh/ruff-action@v3
       with:
         version: 0.13.1
