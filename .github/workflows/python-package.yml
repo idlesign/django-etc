@@ -47,5 +47,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.github_token }}
       run: |
-        uv run coverage run -m pytest
-        uv run coveralls --service=github
+        uv run --no-sync coverage run -m pytest
+        uv run --no-sync coveralls --service=github
