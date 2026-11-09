@@ -14,7 +14,9 @@ try:
         return construct_relative_path(parser.origin.template_name, name)
 
 except ImportError:
-    construct_relative_path_ = lambda parser, name: name  # Sorry sub here for now.
+    # Sorry sub here for now.
+    def construct_relative_path_(parser, name):
+        return name
 
 from ..toolbox import get_site_url
 
@@ -46,7 +48,7 @@ class DynamicIncludeNode(Node):
         self.template = template
         self.extra_context = kwargs.pop('extra_context', {})
         self.isolated_context = kwargs.pop('isolated_context', False)
-        super(DynamicIncludeNode, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def render_(self, tpl_new, context):
 

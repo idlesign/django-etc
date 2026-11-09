@@ -9,7 +9,7 @@ from django.db.models.base import ModelBase, Model
 class InheritedModelMetaclass(ModelBase):
 
     def __new__(cls, name, bases, attrs):
-        cl = super(InheritedModelMetaclass, cls).__new__(cls, name, bases, attrs)
+        cl = super().__new__(cls, name, bases, attrs)
 
         texts_marker = '_texts_applied'
 

@@ -9,11 +9,11 @@ def set_form_widgets_attrs(form: Form, attrs: dict):
         set_form_widgets_attrs(my_form, {'class': 'clickable'})
 
     """
-    for _, field in form.fields.items():
+    for field in form.fields.values():
         attrs_ = dict(attrs)
 
         for name, val in attrs.items():
-            if hasattr(val, '__call__'):
+            if callable(val):
                 attrs_[name] = val(field)
 
         field.widget.attrs = field.widget.build_attrs(attrs_)

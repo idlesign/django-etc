@@ -11,15 +11,13 @@ from etc.templatetags.gravatar import gravatar_get_url, gravatar_get_img
 from etc.templatetags.model_meta import model_meta_verbose_name, model_meta_verbose_name_plural
 from etc.toolbox import set_form_widgets_attrs, choices_list, get_choices, get_site_url, get_model_class_from_string, \
     get_model_class_from_settings, import_app_module, import_project_modules
+from tests.testapp.models import MyChildModel1, MyChildModel2
 
 
 class MyForm(forms.Form):
 
     field1 = forms.CharField(label='f1', max_length=100)
     field2 = forms.CharField(label='f2', max_length=100)
-
-
-from tests.testapp.models import MyChildModel1, MyChildModel2
 
 
 class TestInheritedModel:

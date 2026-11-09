@@ -1,6 +1,7 @@
 from types import ModuleType
 from typing import Optional, List
 
+from django.conf import settings
 from django.utils.module_loading import module_has_submodule
 
 try:
@@ -28,7 +29,7 @@ def import_app_module(app_name: str, module_name: str) -> Optional[ModuleType]:
         sub_module = import_module(f'{app_name}.{module_name}')
         return sub_module
 
-    except:
+    except ImportError:
 
         # The same bubbling strategy as in autodiscover_modules().
         if module_has_submodule(module, module_name):  # Module is in a package.
@@ -44,8 +45,6 @@ def import_project_modules(module_name: str) -> List[ModuleType]:
     :param module_name:
 
     """
-    from django.conf import settings
-
     submodules = []
     for app in settings.INSTALLED_APPS:
         module = import_app_module(app, module_name)
