@@ -1,9 +1,6 @@
-Various utils
-=============
+# Various Utils
 
-
-import_app_module
------------------
+## import_app_module
 
 **etc.toolbox.import_app_module** imports and returns a module from a specific app by its name.
 
@@ -11,34 +8,27 @@ If your application provides some kind of tooling for others and you know that c
 for this tooling could be found in a certain module within a thirdparty app you can use this function
 to load such a module by its name.
 
-.. code-block:: python
-
-    from etc.toolbox import import_app_module
-
-
-    module = import_app_module('someapp', 'mymodule')  # Get `mymodule` module from `someapp` application.
+```python
+from etc.toolbox import import_app_module
 
 
+module = import_app_module('someapp', 'mymodule')  # Get `mymodule` module from `someapp` application.
+```
 
-import_project_modules
-----------------------
+## import_project_modules
 
 **etc.toolbox.import_project_modules** imports modules from registered apps using given module name and returns them as a list.
 
 This is an automation for `import_app_module()` described above to load all modules from every app in a project.
 
-
-.. code-block:: python
-
-    from etc.toolbox import import_project_modules
+```python
+from etc.toolbox import import_project_modules
 
 
-    all_modules = import_project_modules('mymodule')  # Get `mymodule` module from every app in a project.
+all_modules = import_project_modules('mymodule')  # Get `mymodule` module from every app in a project.
+```
 
-
-
-get_site_url
-------------
+## get_site_url
 
 **etc.toolbox.get_site_url** does its best to provide you with a site URL where request object is unavailable.
 
@@ -50,40 +40,36 @@ this function tries to get it from *environment* and *settings*, using the follo
 3. Django Sites contrib
 4. Request object (if available)
 
-
-.. code-block:: python
-
-    from etc.toolbox import get_site_url
+```python
+from etc.toolbox import get_site_url
 
 
-    my_url = get_site_url()
+my_url = get_site_url()
+```
 
-
-
-`etc_misc` Template Tags
-------------------------
+## `etc_misc` Template Tags
 
 * **site_url** tag.
 
     Does its best to provide you with a site URL whether request object is unavailable or not.
-    See ``get_site_url`` description above.
+    See `get_site_url` description above.
 
-    .. code-block:: html
-
-        {% load etc_misc %}
-        {% site_url %}
-
+    ```html
+    {% load etc_misc %}
+    {% site_url %}
+    ```
 
 * **include_** tag.
 
-    Similar to built-in ``include`` template tag, but allowing
+    Similar to built-in `include` template tag, but allowing
     template variables to be used in template name and a fallback template,
     thus making the tag more dynamic.
 
-    .. warning:: Requires Django 1.8+
+    !!! warning
 
-    .. code-block:: html
+        Requires Django 1.8+
 
-        {% load etc_misc %}
-        {% include_ "sub_{{ postfix_var }}.html" fallback "default.html" %}
-
+    ```html
+    {% load etc_misc %}
+    {% include_ "sub_{{ postfix_var }}.html" fallback "default.html" %}
+    ```

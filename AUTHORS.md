@@ -1,11 +1,7 @@
-django-etc authors
-==================
+# django-etc authors
 
 Created by Igor `idle sign` Starikov.
 
+## Contributors
 
-Contributors
-------------
-
-Hakkı <https://github.com/oSoloTurk>
-
+* Hakkı <https://github.com/oSoloTurk>

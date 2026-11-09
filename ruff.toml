@@ -1,0 +1,73 @@
+target-version = "py310"
+line-length = 120
+extend-exclude = [
+    "migrations",
+]
+
+[format]
+quote-style = "single"
+exclude = []
+
+[lint]
+select = [
+    "B",  # possible bugs
+    "BLE",  # broad exception
+    "C4",  # comprehensions
+    "DTZ",  # work with datetimes
+    "E",  # code style
+    "ERA",  # commented code
+    "EXE",  # check executables
+    "F",  # misc
+    "FA",  # future annotations
+    "FBT",  # booleans
+    "FURB",  # modernizing
+    "G",  # logging format
+    "I",  # imports
+    "ICN",  # import conventions
+    "INT",  # i18n
+    "ISC",  # string concat
+    "PERF",  # performance
+    "PIE",  # misc
+    "PLC",  # misc
+    "PLE",  # misc errors
+    "PT",  # pytest
+    "PTH",  # pathlib
+    "PYI",  # typing
+    "RSE",  # exception raising
+    "RUF",  # misc
+    "SLOT",  # slots related
+    "TC",  # typing
+    "UP",  # Python upgrades
+]
+
+ignore = [
+    "B010",
+    "B904",
+    "C408",
+    "ERA001",
+    "F401",
+    "F841",
+    "FBT001",
+    "FBT002",
+    "I001",
+    "PERF401",
+    "PTH100",
+    "PTH118",
+    "PTH120",
+    "RUF005",
+    "RUF012",
+    "RUF013",
+    "RUF100",
+    "TC001",
+    "UP006",
+    "UP007",
+    "UP031",
+    "UP035",
+    "UP037",
+    "UP045",
+]
+
+[lint.extend-per-file-ignores]
+"tests/*" = [
+    "PLC0415",
+]

@@ -1,0 +1,85 @@
+[project]
+name = "django-etc"
+dynamic = ["version"]
+description = "Tiny stuff for Django that won't fit into separate apps."
+authors = [
+    { name = "Igor Starikov", email = "idlesign@yandex.ru" },
+]
+readme = "README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+keywords = ["Django", "utils"]
+dependencies = []
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "License :: OSI Approved :: BSD License",
+]
+
+[project.urls]
+Homepage = "https://github.com/idlesign/django-etc"
+Documentation = "https://django-etc.readthedocs.io/"
+
+[dependency-groups]
+dev = [
+    { include-group = "docs" },
+    { include-group = "linters" },
+    { include-group = "tests" },
+    { include-group = "runtime" },
+]
+docs = [
+    "mkdocs-apidescribed-plugin",
+    "mkdocs-material",
+    "mkdocs-navsorted-plugin",
+]
+linters = [
+    "ruff==0.13.1",
+]
+tests = [
+    "coverage",
+    "pytest",
+    "pytest-djangoapp>=1.6.0",
+]
+runtime = [
+    "Django>=3.2.9",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/etc/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/etc"]
+
+[tool.hatch.build.targets.sdist]
+packages = ["src/"]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+addopts = "--pyargs"
+
+[tool.coverage.run]
+source = [
+    "src/etc",
+]
+
+[tool.makeapp.tests]
+deps = [
+    "django~=${{ django-version }}.0",
+]

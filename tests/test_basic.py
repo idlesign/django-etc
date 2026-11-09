@@ -19,7 +19,7 @@ class MyForm(forms.Form):
     field2 = forms.CharField(label='f2', max_length=100)
 
 
-from etc.tests.testapp.models import MyChildModel1, MyChildModel2
+from tests.testapp.models import MyChildModel1, MyChildModel2
 
 
 class TestInheritedModel:
@@ -158,7 +158,7 @@ class TestChoices:
     @pytest.mark.skipif(version_info.major == 2, reason='No Enum in Python 2')
     def test_enum(self):
 
-        from etc.tests.testapp.models import Role, MyChoiceModel, Variant
+        from tests.testapp.models import Role, MyChoiceModel, Variant
 
         assert Role.APPLICANT is Role(0)
         assert Role.APPLICANT.value == 0

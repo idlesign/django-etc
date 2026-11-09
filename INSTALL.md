@@ -1,22 +1,25 @@
-django-etc installation
-=======================
+# django-etc installation
 
+Python `pip` package is required to install `django-etc`.
 
-Python ``setuptools`` package is required to install django-etc.
+## From sources
 
+Use the following command line to install `django-etc` from sources directory (containing `pyproject.toml`):
 
-Use the following command line to install django-etc from sources directory (containing setup.py):
+```shell
+pip install .
+```
 
-    easy_install .
+## From PyPI
 
-or
+Alternatively you can install `django-etc` from PyPI:
 
-    python setup.py install
+```shell
+pip install django-etc
+```
 
+Use `-U` flag for upgrade:
 
-Alternatively you can install an up-to-date version of django-etc from PyPI:
-
-    easy_install django-etc
-
-
-Note: `easy_install` is bundled with ``setuptools``.
+```shell
+pip install -U django-etc
+```

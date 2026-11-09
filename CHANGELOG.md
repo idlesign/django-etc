@@ -1,135 +1,110 @@
-django-etc changelog
-====================
+# django-etc changelog
 
+### Unreleased
 
-Unreleased
-----------
-! Dropped QA for Py 3.6. Added QA for Django 4.1.
+* !! Dropped QA for Py 3.6. Added QA for Django 4.1.
 
+### v1.4.0 [2022-10-06]
 
-v1.4.0 [2022-10-06]
--------------------
-+ Introduced 'CustomModelPage.admin_cls' for declarative customization.
-+ Introduced 'CustomModelPage.bound_response' to allow custom responses (see #6).
+* ++ Introduced 'CustomModelPage.admin_cls' for declarative customization.
+* ++ Introduced 'CustomModelPage.bound_response' to allow custom responses (see #6).
 
+### v1.3.1 [2021-12-18]
 
-v1.3.1 [2021-12-18]
--------------------
-* Django 4.0 compatibility improved.
+* ** Django 4.0 compatibility improved.
 
+### v1.3.0 [2020-12-29]
 
-v1.3.0 [2020-12-29]
--------------------
-! Drop support for Django<2.0.
-! Drop support for Python 3.5.
-+ Added 'etc.admin.CustomModelPage' helper.
+* !! Drop support for Django<2.0.
+* !! Drop support for Python 3.5.
+* ++ Added 'etc.admin.CustomModelPage' helper.
 
+### v1.2.0 [2019-12-07]
 
-v1.2.0 [2019-12-07]
--------------------
-+ Add Django 3.0 compatibility. Effectively deprecates Py2 support.
+* ++ Add Django 3.0 compatibility. Effectively deprecates Py2 support.
 
+### v1.1.0
 
-v1.1.0
-------
-! Dropped QA for Django 1.7.
-! Dropped QA for Python 2.
-+ Added 'ChoicesEnumMixin' to support Py3 Enum based choices for models.
+* !! Dropped QA for Django 1.7.
+* !! Dropped QA for Python 2.
+* ++ Added 'ChoicesEnumMixin' to support Py3 Enum based choices for models.
 
+### v1.0.0
 
-v1.0.0
-------
-! Dropped QA for Python 3.4.
-* No functional changes. Celebrating 1.0.0.
+* !! Dropped QA for Python 3.4.
+* ** No functional changes. Celebrating 1.0.0.
 
+### v0.11.1
 
-v0.11.1
--------
-* Fixed 'render_' thread safety issue.
+* ** Fixed 'render_' thread safety issue.
 
+### v0.11.0
 
-v0.11.0
--------
-+ Added advanced 'include_' template tag.
-+ Django 2.0 and 2.1 basic compatibility.
-* Dropped support for Python<3.4 and Django<1.7.
+* ++ Added advanced 'include_' template tag.
+* ++ Django 2.0 and 2.1 basic compatibility.
+* ** Dropped support for Python<3.4 and Django<1.7.
 
+### v0.10.0
 
-v0.10.0
--------
-+ 'model_field' template tags now work with field names from template variables
+* ++ 'model_field' template tags now work with field names from template variables
 
+### v0.9.2
 
-v0.9.2
-------
-* Package distribution fix.
+* ** Package distribution fix.
 
+### v0.9.1
 
-v0.9.1
-------
-* Fixed import_app_module() handling of app config paths.
+* ** Fixed import_app_module() handling of app config paths.
 
+### v0.9.0
 
-v0.9.0
-------
-+ Added import_app_module() function.
-+ Added import_project_modules() function.
+* ++ Added import_app_module() function.
+* ++ Added import_project_modules() function.
 
+### v0.8.0
 
-v0.8.0
-------
-+ Implemented `{% site_url %}` template tag.
-+ `get_site_url()` now accpets Request object.
+* ++ Implemented `{% site_url %}` template tag.
+* ** `get_site_url()` now accpets Request object.
 
+### v0.7.2
 
-v0.7.2
-------
-* `gravatar_get_img` now returns a safe string.
-* Improved Django 1.9 support.
+* ** `gravatar_get_img` now returns a safe string.
+* ** Improved Django 1.9 support.
 
+### v0.7.1
 
-v0.7.1
-------
-* Improved Django 1.8 support.
+* ** Improved Django 1.8 support.
 
+### v0.7.0
 
-v0.7.0
-------
-+ Implemented `get_site_url` function.
-* Fixed possible attribute error in `model_field_verbose_name` and `model_field_help_text`.
+* ++ Implemented `get_site_url` function.
+* ** Fixed possible attribute error in `model_field_verbose_name` and `model_field_help_text`.
 
+### v0.6.1
 
-v0.6.1
-------
-+ `model_field_verbose_name` and `model_field_help_text` now work with sets of homogeneous objects (e.g. QuerySet or Page).
+* ++ `model_field_verbose_name` and `model_field_help_text` now work with sets of homogeneous objects (e.g. QuerySet or Page).
 
+### v0.6.0
 
-v0.6.0
-------
-+ Implemented `model_field_verbose_name` and `model_field_help_text` template tags.
+* ++ Implemented `model_field_verbose_name` and `model_field_help_text` template tags.
 
+### v0.5.0
 
-v0.5.0
-------
-+ Implemented choices_list() and get_choices().
+* ++ Implemented choices_list() and get_choices().
 
+### v0.4.0
 
-v0.4.0
-------
-+ Implemented get_model_class_from_string().
+* ++ Implemented get_model_class_from_string().
 
+### v0.3.0
 
-v0.3.0
-------
-+ Implemented set_form_widgets_attrs().
-* Suppressed Django 1.7 warning.
+* ++ Implemented set_form_widgets_attrs().
+* ** Suppressed Django 1.7 warning.
 
+### v0.2.0
 
-v0.2.0
-------
-+ Implemented get_model_class_from_settings().
+* ++ Implemented get_model_class_from_settings().
 
+### v0.1.0
 
-v0.1.0
-------
-+ Basic functionality.
+* ++ Initial release.
