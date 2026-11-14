@@ -1,6 +1,7 @@
 # django-etc changelog
 
 ### Unreleased
+* ++ Added 'from' (value by key from a container) and 'split' template filters.
 
 * !! Dropped QA for Py 3.6. Added QA for Django 4.1.
 
