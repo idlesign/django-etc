@@ -54,6 +54,8 @@
 
     * **site_url** does its best to provide you with a site URL whether request object is available or not.
     * **include_** allows a template name to include template variables. Allows fallback template if the target is not found.
+    * **from** is a filter returning a value for a given key from a given container (e.g. a dict).
+    * **split** is a filter splitting a string into a list using the given separator.
 
 ## Documentation
 
