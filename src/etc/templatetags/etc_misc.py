@@ -185,4 +185,4 @@ def split(value: str, separator: str = None) -> list:
     :param separator:
 
     """
-    return str(value).split(separator)
+    return f"{value}".split(separator)
