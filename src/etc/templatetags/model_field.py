@@ -87,7 +87,19 @@ class FieldAttrNode(template.Node):
         def get_field(model, field_name):
             return model._meta.get_field(field_name)
 
-        var_field = template.Variable(self.field)
+        var_field = None
+
+        try:
+            var_field = template.Variable(self.field)
+
+        except template.TemplateSyntaxError:
+            # Newer Django versions reject some characters (e.g. '-')
+            # in variable names, so an invalid delimiter ends up here.
+            if settings.DEBUG:
+                raise
+
+            return return_contents('')
+
         var_model = var_field.lookups[0]
 
         try:
