@@ -6,6 +6,11 @@
 
 Use it if you need to perform some action in admin requiring user input.
 
+!!! note
+    The page model is registered under the application it is defined in (the `app_label`
+    is deduced from the module, and may be overridden with the `app_label` attribute).
+    No migrations are created for it.
+
 ```python
 from django.db import models
 from django.http import HttpResponse
