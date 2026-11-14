@@ -38,8 +38,9 @@ class CustomModelPage(models.Model):
     title: str = _('Custom page')
     """Page title to be used."""
 
-    app_label: str = 'admin'
-    """Application label to relate page to. Default: admin"""
+    app_label: str = ''
+    """Application label to relate page to. By default deduced by Django
+    from the module the page is defined in."""
 
     bound_request: Optional[HttpRequest] = None
     """Request object bound runtime to this page model."""
@@ -62,7 +63,10 @@ class CustomModelPage(models.Model):
     def __init_subclass__(cls) -> None:
         meta = cls.Meta
         meta.verbose_name = meta.verbose_name_plural = cls.title
-        meta.app_label = cls.app_label
+
+        if cls.app_label:
+            meta.app_label = cls.app_label
+
         super().__init_subclass__()
 
     @classmethod
