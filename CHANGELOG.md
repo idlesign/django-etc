@@ -1,6 +1,6 @@
 # django-etc changelog
 
-### Unreleased
+### v1.5.0 [2026-11-14]
 * !! CustomModelPage subclasses no longer default to the 'admin' app label: the label is deduced from the module the page is defined in, so no more migrations are created in django.contrib.admin. Beware: admin URL names of such pages change accordingly (e.g. admin:admin_mypage_add -> admin:myapp_mypage_add) (close #10).
 * ++ Added 'from' (value by key from a container) and 'split' template filters.
 * ** Fixed model_field tags compatibility with Django 6.x (invalid variable name characters are tolerated outside DEBUG).
