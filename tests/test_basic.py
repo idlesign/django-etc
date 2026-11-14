@@ -309,3 +309,21 @@ class TestImportModules:
 def test_include_formatted(request_client):
     result = request_client().get('/index/')
     assert result.content == b'\n<body>thisone\nstatic\n<sub>dynamic</sub>\ndefault\n</body>'
+
+
+class TestMiscFilters:
+
+    def test_from(self):
+        from django.template import Context, Template
+
+        out = Template('{% load etc_misc %}{{ "k"|from:container }}').render(Context({"container": {"k": "v"}}))
+        assert out == "v"
+
+        out = Template('{% load etc_misc %}{{ "x"|from:container }}').render(Context({"container": {"k": "v"}}))
+        assert out == "None"
+
+    def test_split(self):
+        from django.template import Context, Template
+
+        out = Template('{% load etc_misc %}{{ value|split:","|join:"|" }}').render(Context({"value": "a,b,c"}))
+        assert out == "a|b|c"

@@ -1,5 +1,6 @@
 from copy import deepcopy
 from functools import partial
+from typing import Any
 
 from django import template
 from django.template import TemplateDoesNotExist
@@ -153,3 +154,35 @@ def include_(parser, token):
         )
 
     return include_node
+
+
+@register.filter(name='from')
+def from_(key: Any, container: dict) -> Any:
+    """Returns a value for the given key from the given container.
+
+    Example:
+
+        {% load etc_misc %}
+        {{ my_key|from:my_dict }}
+
+    :param key:
+    :param container:
+
+    """
+    return container.get(key)
+
+
+@register.filter
+def split(value: str, separator: str = None) -> list:
+    """Splits the given string into a list using the given separator.
+
+    Example:
+
+        {% load etc_misc %}
+        {{ my_string|split:"," }}
+
+    :param value:
+    :param separator:
+
+    """
+    return str(value).split(separator)

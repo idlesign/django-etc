@@ -73,3 +73,25 @@ my_url = get_site_url()
     {% load etc_misc %}
     {% include_ "sub_{{ postfix_var }}.html" fallback "default.html" %}
     ```
+
+* **from** filter.
+
+    Returns a value for the given key from the given container (e.g. a dict).
+
+    ```html
+    {% load etc_misc %}
+    {% with payment_id|from:payments as payment_number %}
+
+        • {{ payment_id }} {{ payment_number }}
+
+    {% endwith %}
+    ```
+
+* **split** filter.
+
+    Splits the given string into a list using the given separator.
+
+    ```html
+    {% load etc_misc %}
+    {{ my_string|split:"," }}
+    ```
