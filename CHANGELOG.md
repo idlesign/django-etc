@@ -2,6 +2,7 @@
 
 ### Unreleased
 * ++ Added 'from' (value by key from a container) and 'split' template filters.
+* ** Fixed model_field tags compatibility with Django 6.x (invalid variable name characters are tolerated outside DEBUG).
 
 * !! Dropped QA for Py 3.6. Added QA for Django 4.1.
 
