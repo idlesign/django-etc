@@ -41,9 +41,24 @@ class ChoicesEnumMixin:
     """Value to hint mapping."""
 
     def __init__(self, *args):
+        # Members are declared either with a bare value or a (value, title, hint) tuple.
+        # Enum machinery stores the whole declaration tuple in _value_, so we narrow it
+        # down to the bare value here. __new__ is deliberately not defined in this mixin:
+        # otherwise enum treats the mixin as a data type and replaces __str__ with its own.
+        if isinstance(self._value_, tuple):
+            self._value_ = args[0]
 
         cls = self.__class__
         value = self.value
+
+        title = args[1] if len(args) > 1 else None
+        hint = args[2] if len(args) > 2 else ''
+
+        if title is None:
+            title = self.name.lower().capitalize()
+
+        self.title = title
+        self.hint = hint
 
         def contribute_to_mapping(name, val):
 
@@ -55,36 +70,18 @@ class ChoicesEnumMixin:
 
             mapping[value] = val
 
-        title = self.title
-
-        if title is None:
-            title = self.name.lower().capitalize()
-            self.title = title
-
         contribute_to_mapping('titles', title)
-        contribute_to_mapping('hints', self.hint)
+        contribute_to_mapping('hints', hint)
 
-    def __new__(cls, *value):
-        val = value[0]
+    @classmethod
+    def _missing_(cls, value):
+        # The enum reverse lookup map is keyed by declaration tuples,
+        # so we search for a member by its bare value.
+        for member in cls._member_map_.values():
+            if member._value_ == value:
+                return member
 
-        obj = object.__new__(cls)
-        obj._value_ = val
-
-        title = None
-        hint = ''
-
-        meta = value[1:]
-
-        if meta:
-            title = meta[0]
-
-            if len(meta) > 1:
-                hint = meta[1]
-
-        obj.title = title
-        obj.hint = hint
-
-        return obj
+        return None
 
     def __bool__(self):
         # Try to be compatible with boolean fields and lookups.

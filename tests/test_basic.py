@@ -14,7 +14,7 @@ from etc.templatetags.gravatar import gravatar_get_url, gravatar_get_img
 from etc.templatetags.model_meta import model_meta_verbose_name, model_meta_verbose_name_plural
 from etc.toolbox import set_form_widgets_attrs, choices_list, get_choices, get_site_url, get_model_class_from_string, \
     get_model_class_from_settings, import_app_module, import_project_modules
-from tests.testapp.models import MyChildModel1, MyChildModel2
+from tests.testapp.models import MyChildModel1, MyChildModel2, MyChoiceModel, Role, Variant
 
 
 class MyForm(forms.Form):
@@ -179,8 +179,6 @@ class TestChoices:
     @pytest.mark.skipif(version_info.major == 2, reason='No Enum in Python 2')
     def test_enum(self):
 
-        from tests.testapp.models import Role, MyChoiceModel, Variant
-
         assert Role.APPLICANT is Role(0)
         assert Role.APPLICANT.value == 0
         assert Role.APPLICANT.title == 'Applicant'
@@ -205,6 +203,8 @@ class TestChoices:
         assert Role.get_hint(Role.APPLICANT) == 'Description'
 
         assert bool(Role.ADMIN) is True
+        assert str(Role.APPLICANT) == '0'
+        assert str(Variant.B) == 'b'
         assert int(Role.MEMBER) == 2
 
         objects = MyChoiceModel.objects
@@ -217,6 +217,14 @@ class TestChoices:
 
         assert obj_1.id == objects.get(role=Role.MEMBER).id
         assert obj_2.id == objects.get(variant=Variant.B).id
+
+    def test_enum_db_storage(self):
+        # При сохранении члена перечисления в БД должно попадать значение, а не его имя.
+        obj = MyChoiceModel.objects.create(role=Role.ADMIN, variant=Variant.B)
+        obj.refresh_from_db()
+
+        assert obj.role == 1
+        assert obj.variant == 'b'
 
     def test_choices(self):
 

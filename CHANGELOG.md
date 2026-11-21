@@ -2,6 +2,7 @@
 
 ### Unreleased
 * ++ Added 'staticv' template tag appending a version (STATIC_VERSION setting or process start time) to static file URLs to invalidate client caches.
+* ** Fixed ChoicesEnumMixin-based enums storing member names instead of values in text fields on Python 3.11+ (enum machinery treated the mixin as a data type and shadowed its __str__).
 
 ### v1.5.0 [2026-11-14]
 * !! CustomModelPage subclasses no longer default to the 'admin' app label: the label is deduced from the module the page is defined in, so no more migrations are created in django.contrib.admin. Beware: admin URL names of such pages change accordingly (e.g. admin:admin_mypage_add -> admin:myapp_mypage_add) (close #10).
