@@ -1,11 +1,14 @@
 from copy import deepcopy
 from functools import partial
+from time import time
 from typing import Any
 
 from django import template
+from django.conf import settings
 from django.template import TemplateDoesNotExist
 from django.template.base import Lexer, Parser
 from django.template.loader_tags import do_include, Node
+from django.templatetags.static import static
 
 try:
     from django.template.loader_tags import construct_relative_path
@@ -24,6 +27,15 @@ from ..toolbox import get_site_url
 get_lexer = partial(Lexer)
 register = template.Library()
 
+STATIC_VERSION: int = getattr(settings, "STATIC_VERSION", None) or int(time())
+"""Static assets version used to invalidate client caches.
+
+Read once when this module is loaded: taken from the STATIC_VERSION setting
+when declared, otherwise the process start time is used, so the version
+changes with every application restart.
+
+"""
+
 
 @register.simple_tag(takes_context=True)
 def site_url(context):
@@ -38,6 +50,24 @@ def site_url(context):
 
     """
     return get_site_url(request=context.get('request', None))
+
+
+@register.simple_tag
+def staticv(path: str) -> str:
+    """Returns a static file URL appended with a version (e.g. /static/js/some.js?v=123).
+
+    The version is taken from STATIC_VERSION (see above), which allows
+    client cache invalidation without manual version bumps.
+
+    Example:
+
+        {% load etc_misc %}
+        {% staticv "js/some.js" %}
+
+    :param path: Static file path relative to a static directory.
+
+    """
+    return f"{static(path)}?v={STATIC_VERSION}"
 
 
 class DynamicIncludeNode(Node):

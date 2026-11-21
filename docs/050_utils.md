@@ -74,6 +74,19 @@ my_url = get_site_url()
     {% include_ "sub_{{ postfix_var }}.html" fallback "default.html" %}
     ```
 
+* **staticv** tag.
+
+    Returns a static file URL appended with a version (e.g. `/static/js/some.js?v=123`).
+
+    The version is taken from the `STATIC_VERSION` setting. If the setting is not declared,
+    the process start time is used, so the version changes with every application restart.
+    This allows client cache invalidation without manual version bumps.
+
+    ```html
+    {% load etc_misc %}
+    {% staticv "js/some.js" %}
+    ```
+
 * **from** filter.
 
     Returns a value for the given key from the given container (e.g. a dict).

@@ -327,3 +327,22 @@ class TestMiscFilters:
 
         out = Template('{% load etc_misc %}{{ value|split:","|join:"|" }}').render(Context({"value": "a,b,c"}))
         assert out == "a|b|c"
+
+
+class TestStaticvTag:
+
+    def test_tag(self, template_render_tag):
+        from etc.templatetags import etc_misc
+
+        result = template_render_tag("etc_misc", 'staticv "js/some.js"')
+        assert result == f"/static/js/some.js?v={etc_misc.STATIC_VERSION}"
+
+    def test_version_from_settings(self, settings):
+        from importlib import reload
+
+        from etc.templatetags import etc_misc
+
+        with settings(STATIC_VERSION=42):
+            assert reload(etc_misc).STATIC_VERSION == 42
+
+        reload(etc_misc)
