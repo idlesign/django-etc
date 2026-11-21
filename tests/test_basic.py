@@ -114,7 +114,7 @@ class TestModelFieldTemplateTags:
         check('model_field_help_text', 'whether the user can log', 'model.is_staff')
 
     def test_model_field_homogeneous_sets(self, template_render_tag, template_context):
-        # Теги должны принимать не только модель, но и наборы: QuerySet и страницу пагинатора.
+        # Tags should accept not only models, but also sets: QuerySet and paginator Page.
         context = template_context({'model': User.objects.all()})
         result = template_render_tag('model_field', 'model_field_verbose_name from model.first_name', context)
         assert 'first name' in result
@@ -219,7 +219,7 @@ class TestChoices:
         assert obj_2.id == objects.get(variant=Variant.B).id
 
     def test_enum_db_storage(self):
-        # При сохранении члена перечисления в БД должно попадать значение, а не его имя.
+        # An enum member should be stored as its bare value, not its name.
         obj = MyChoiceModel.objects.create(role=Role.ADMIN, variant=Variant.B)
         obj.refresh_from_db()
 
@@ -344,7 +344,7 @@ class TestImportModules:
         assert m is None
 
     def test_import_app_module_bubbles_import_error(self):
-        # Ошибка импорта внутри существующего подмодуля не должна замалчиваться.
+        # Import errors raised inside an existing submodule should not be silenced.
         with pytest.raises(ImportError, match='Simulated broken module'):
             import_app_module('tests.testapp', 'brokenmod')
 
