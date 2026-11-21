@@ -1,6 +1,6 @@
 # django-etc changelog
 
-### Unreleased
+### v1.6.0 [2026-11-21]
 * ++ Added 'staticv' template tag appending a version (STATIC_VERSION setting or process start time) to static file URLs to invalidate client caches.
 * ** Fixed ChoicesEnumMixin-based enums storing member names instead of values in text fields on Python 3.11+ (enum machinery treated the mixin as a data type and shadowed its __str__).
 
