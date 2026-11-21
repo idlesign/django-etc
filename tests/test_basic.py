@@ -5,8 +5,11 @@ import pytest
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
+from django.core.paginator import Paginator
 from django.template.base import TemplateSyntaxError
 
+from etc import sites
+from etc.sites import DomainGetter
 from etc.templatetags.gravatar import gravatar_get_url, gravatar_get_img
 from etc.templatetags.model_meta import model_meta_verbose_name, model_meta_verbose_name_plural
 from etc.toolbox import set_form_widgets_attrs, choices_list, get_choices, get_site_url, get_model_class_from_string, \
@@ -72,6 +75,15 @@ class TestModelFieldTemplateTags:
             assert val in result
     
             #
+            # No field at all.
+            result = template_render_tag('model_field', '%s from model' % tag, context)
+            assert result == ''
+
+            with settings(DEBUG=True):
+                with pytest.raises(TemplateSyntaxError):
+                    template_render_tag('model_field', '%s from model' % tag, context)
+
+            #
             # Wrong model-field delimiter.
             result = template_render_tag('model_field', '%s from %s' % (tag, fieldname.replace('.', '-')), context)
             assert result == ''
@@ -100,6 +112,17 @@ class TestModelFieldTemplateTags:
 
         check('model_field_verbose_name', 'first name', 'model.first_name')
         check('model_field_help_text', 'whether the user can log', 'model.is_staff')
+
+    def test_model_field_homogeneous_sets(self, template_render_tag, template_context):
+        # Теги должны принимать не только модель, но и наборы: QuerySet и страницу пагинатора.
+        context = template_context({'model': User.objects.all()})
+        result = template_render_tag('model_field', 'model_field_verbose_name from model.first_name', context)
+        assert 'first name' in result
+
+        page = Paginator(User.objects.all(), 10).page(1)
+        context = template_context({'model': page})
+        result = template_render_tag('model_field', 'model_field_verbose_name from model.first_name', context)
+        assert 'first name' in result
 
 
 class TestForm:
@@ -180,6 +203,9 @@ class TestChoices:
         assert Role.get_hint(0) == 'Description'
         assert Role.get_hint(Role(0)) == 'Description'
         assert Role.get_hint(Role.APPLICANT) == 'Description'
+
+        assert bool(Role.ADMIN) is True
+        assert int(Role.MEMBER) == 2
 
         objects = MyChoiceModel.objects
 
@@ -283,6 +309,19 @@ class TestGetSiteUrl:
         result = template_render_tag('etc_misc', 'site_url')
         assert result == url
 
+    def test_domain_getter(self):
+        assert DomainGetter('fake').get_host() == 'fake'
+        assert DomainGetter(None).get_host() is None
+
+    def test_fallbacks(self, monkeypatch, settings):
+        for var in ('SITE_URL', 'SITE_DOMAIN', 'SITE_PROTO', 'SITE_SCHEME'):
+            monkeypatch.delenv(var, raising=False)
+
+        monkeypatch.setattr(sites, 'get_current_site', lambda request: DomainGetter(None))
+
+        with settings(SITE_URL=None, SITE_DOMAIN=None):
+            assert get_site_url() == 'http://undefined-domain.local'
+
 
 class TestImportModules:
 
@@ -295,6 +334,11 @@ class TestImportModules:
 
         m = import_app_module('etc', 'uknown')
         assert m is None
+
+    def test_import_app_module_bubbles_import_error(self):
+        # Ошибка импорта внутри существующего подмодуля не должна замалчиваться.
+        with pytest.raises(ImportError, match='Simulated broken module'):
+            import_app_module('tests.testapp', 'brokenmod')
 
         m = import_app_module('django.contrib.admin.apps.SimpleAdminConfig', '__init__')
         assert hasattr(m, 'site')
@@ -309,6 +353,11 @@ class TestImportModules:
 def test_include_formatted(request_client):
     result = request_client().get('/index/')
     assert result.content == b'\n<body>thisone\nstatic\n<sub>dynamic</sub>\ndefault\n</body>'
+
+
+def test_include_formatted_isolated(template_render_tag):
+    result = template_render_tag('etc_misc', 'include_ "sub_{{ postfix }}.html" only', {'postfix': 'static'})
+    assert 'static' in result
 
 
 class TestMiscFilters:

@@ -52,3 +52,4 @@ class MyChildModel2(InheritedModel, MyParentModel):
 
     class Fields:
         code = 'Non-secret code'
+        unknown_field = 'This entry is ignored since there is no such model field.'

@@ -3,6 +3,7 @@ from django.contrib import admin
 from etc.admin import admins
 
 from tests.testapp.admin import MyPage1, MyCustomPageModelAdmin, MyPage2
+from tests.testapp.models import MyChildModel2
 
 
 def test_custom_model_pages(request_client, user_create):
@@ -34,3 +35,19 @@ class TestCustomModelAdminPages:
         assert admin.site._registry[MyPage1].__class__ == MyCustomPageModelAdmin
 
         assert admin.site._registry[MyPage2].__class__ == admins.CustomPageModelAdmin
+
+
+def test_readonly_admin(admin_client):
+    obj = MyChildModel2.objects.create(code='x')
+
+    model_admin = admin.site._registry[MyChildModel2]
+    assert model_admin.has_add_permission(None) is False
+    assert model_admin.has_delete_permission(None) is False
+
+    admin_client.configure(model=MyChildModel2, app='testapp')
+    response = admin_client.call_change(obj)
+
+    assert response.ok
+    assert '_save' not in response.text
+    assert '_addanother' not in response.text
+    assert '_continue' not in response.text

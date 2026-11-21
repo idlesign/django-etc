@@ -1,7 +1,10 @@
+from django.contrib import admin
 from django.db import models
 from django.http import HttpResponse
 
 from etc.admin import CustomModelPage, admins
+
+from .models import MyChildModel2
 
 
 class MyCustomPageModelAdmin(admins.CustomPageModelAdmin):
@@ -23,6 +26,7 @@ class MyPage1(CustomModelPage):
 class MyPage2(CustomModelPage):
 
     title = 'Second test page'
+    app_label = 'testapp'
     my_another_field = models.TextField('put data here')
 
     def save(self):
@@ -35,3 +39,10 @@ class MyPage2(CustomModelPage):
 
 MyPage1.register()
 MyPage2.register()
+
+
+class MyChildModel2Admin(admins.ReadonlyAdmin):
+    """Read-only model admin."""
+
+
+admin.site.register(MyChildModel2, MyChildModel2Admin)
